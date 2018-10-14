@@ -1,0 +1,171 @@
+﻿@model FilmViewer.Models.Home.HomeViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+}
+@section scripts{
+    @Scripts.Render("~/bundles/scripts/revolution")
+}
+@section JavaScript
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var api = $('.banner').revolution({
+                delay: 9000,
+
+                onHoverStop: "on",
+
+                hideArrowsOnMobile: "off",
+
+                hideTimerBar: "on",
+                hideThumbs: '0',
+
+                keyboardNavigation: "on",
+
+                navigationType: "none",
+                navigationArrows: "solo",
+
+                soloArrowLeftHalign: "left",
+                soloArrowLeftValign: "center",
+                soloArrowLeftHOffset: 0,
+                soloArrowLeftVOffset: 0,
+
+                soloArrowRightHalign: "right",
+                soloArrowRightValign: "center",
+                soloArrowRightHOffset: 0,
+                soloArrowRightVOffset: 0,
+
+
+                touchenabled: "on",
+                swipe_velocity: "0.7",
+                swipe_max_touches: "1",
+                swipe_min_touches: "1",
+                drag_block_vertical: "false",
+
+
+                fullWidth: "on",
+                forceFullWidth: "off",
+                fullScreen: "off",
+
+            });
+            api.bind("revolution.slide.onchange",
+                function (e, data) {
+                    var slides = $('.banner .slide');
+                    var currentSlide = data.slideIndex;
+
+                    var nextSlide = slides.eq(currentSlide).attr('data-slide');
+                    var prevSlide = slides.eq(currentSlide - 2).attr('data-slide');
+
+                    var lastSlide = slides.length;
+
+                    if (currentSlide == lastSlide) {
+                        var nextSlide = slides.eq(0).attr('data-slide');
+                    }
+
+                    $('.tp-leftarrow').html('<span class="slider__info">' + prevSlide + '</span>');
+                    $('.tp-rightarrow').html('<span class="slider__info">' + nextSlide + '</span>');
+
+                });
+            $('.movie-best__check').click(function (ev) {
+                ev.preventDefault();
+                $('html, body').stop().animate({ 'scrollTop': $('#target').offset().top - 30 }, 900, 'swing');
+            });
+            $('.mega-select__filter').click(function (e) {
+                e.preventDefault();
+                $('.select__field').val('');
+
+                $('.mega-select__filter').removeClass('filter--active');
+                $(this).addClass('filter--active');
+
+                var filter = $(this).attr('data-filter');
+
+                if (filter === "cinema") {
+                    $('#SearchForm').attr('action', '/FilmViewer/Movie');
+                } else if (filter == "actors" || filter == "director") {
+                    $('#SearchForm').attr('action', '/FilmViewer/Actor');
+                }
+                $(".select__btn button").show();
+                $(".select__btn button").css('display', 'inline-block');
+
+                $('.select__btn button:not(.' + filter + ')').hide();
+
+                $(".select__group").removeClass("active-dropdown");
+                $(".select__group").show();
+
+                $('.select__group.' + filter).addClass("active-dropdown");
+                $('.select__group:not(.' + filter + ')').hide();
+
+                $(".marker-indecator").show();
+
+                $('.marker-indecator:not(.' + filter + ')').hide();
+            });
+            $('.filter--active')[0].click();
+            var $block = $('<div/>', { 'class': 'top-scroll' }).append('<a href="#"/>').hide().appendTo('body').click(
+                function () {
+                    $('body,html').animate({ scrollTop: 0 }, 800);
+                    return false;
+                });
+        });
+
+    </script>
+}
+<div class="bannercontainer">
+    <div class="banner">
+        @Html.Action("MainMoviesList", "Home")
+    </div>
+
+
+
+</div>
+<section class="container">
+    @Html.Action("Top6RatesMovies", "Home")
+
+    <div class="col-sm-12">
+        <div class="mega-select-present mega-select-top mega-select--full">
+            <div class="mega-select-marker">
+
+
+                <div class="marker-indecator cinema">
+                    <p class="select-marker"><span>Find favourite </span> <br />movies</p>
+                </div>
+
+                <div class="marker-indecator film-category">
+                    <p class="select-marker"><span>Find</span> <br />category</p>
+                </div>
+
+                <div class="marker-indecator actors">
+                    <p class="select-marker"><span>Find favourite</span> <br />actors</p>
+                </div>
+
+                <div class="marker-indecator director">
+                    <p class="select-marker"><span>Find </span> <br />dicectors</p>
+                </div>
+            </div>
+
+            <div class="mega-select pull-right">
+                <span class="mega-select__point">Search in</span>
+                <ul class="mega-select__sort">
+                    <li class="filter-wrap"><a href="#" class="mega-select__filter filter--active" data-filter='cinema'>Movie</a></li>
+                    <li class="filter-wrap"><a href="#" class="mega-select__filter" data-filter='actors'>Movie people</a></li>
+                </ul>
+                @using (Html.BeginForm("Index", "Movie", FormMethod.Get, new { id = "SearchForm" }))
+                {
+                    <input name="searchString" type='text' class="select__field">
+                    <input name="searchBy" hidden value="1">
+                    <div class="select__btn">
+                        <button type='submit' class="btn btn-md btn--danger cinema">Find <span class=" hidden-exrtasm">movie</span></button>
+                        <button type='submit' class="btn btn-md btn--danger actors">Find <span class=" hidden-exrtasm">move people</span></button>
+
+                    </div>
+                }
+
+
+
+            </div>
+        </div>
+    </div>
+
+    <div class="clearfix"></div>
+    @Html.Action("SelectedMoviesForCurrentUser", "Home")
+
+</section>

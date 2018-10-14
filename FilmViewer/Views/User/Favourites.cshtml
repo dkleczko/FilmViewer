@@ -1,0 +1,57 @@
+﻿@model FilmViewer.Models.User.FavouritesViewModel
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+@{
+    ViewBag.Title = "Favourite Movies";
+    Html.RenderPartial("_SearchFull");
+
+}
+
+
+<section class="container">
+    <div class="col-sm-8 col-md-9 col-sm-push-4 col-md-push-3">
+        <div class="movie">
+
+            <div class="devider-wrapper">
+                <div class="devider"></div>
+            </div>
+            <h2 class="page-heading">List of favourite movies</h2>
+
+            <div style="width:70%">
+                <table>
+
+
+                    @{var count = 1;}
+
+                    @foreach (var movie in Model.FavouritesMovies)
+                    {
+                        <tr class="@(count %2 ==0 ? "rates rates--top" : "rates")">
+                            <td class="rates__obj">
+                                <div class="movie__rate">
+                                    @Html.ActionLink("   " + movie.Title, "Details", "Movie", new { id = movie.MovieId }, new { @class = "movieTitleInTable" })
+                                </div>
+
+                            </td>
+
+
+
+
+                        </tr>
+                        count++;
+                    }
+                </table>
+                @Html.PagedListPager(Model.FavouritesMovies, page => Url.Action("Favourites",
+                              new { page }))
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+    @Html.Partial("_UserMenu")
+
+
+</section>
+

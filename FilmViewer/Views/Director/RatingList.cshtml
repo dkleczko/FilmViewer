@@ -1,0 +1,42 @@
+﻿@model FilmViewer.Models.Director.RatingListViewModel
+
+
+@{
+    ViewBag.Title = "Rating List";
+    Html.RenderPartial("_SearchFull");
+
+}
+
+<section class="container">
+    <div class="col-sm-12">
+        <div class="row">
+            <div class="col-sm-12">
+                <h2 class="page-heading">Top 100 best directors</h2>
+
+                <div class="rates-wrapper rates--full">
+
+                    <table>
+                        <colgroup class="col-width-lg"></colgroup>
+                        <colgroup class="col-width"></colgroup>
+                        <colgroup class="col-width-sm"></colgroup>
+                        @{ var i = 0;}
+                        @foreach (var actor in Model.Top100Directors)
+                        {
+                            <tr class="@(i < 3 ? "rates rates--top" : "rates")">
+                                <td class="rates__obj">@Html.ActionLink(i + 1 + ". " + actor.Name, "Details", new { id = actor.Id }, new { @class = "rates__obj-name" })</td>
+                                <td class="rates__vote">@actor.VoteCount votes</td>
+                                <td class="rates__result">
+                                    @(actor.VoteCount != 0 ?
+                                                  Math.Round((decimal)actor.VoteScores / (decimal)actor.VoteCount, 1).ToString() : "0,0")
+                                </td>
+                            </tr>
+                            i++;
+                        }
+
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>

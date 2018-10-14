@@ -1,0 +1,46 @@
+﻿@model FilmViewer.Models.User.VotedDirectorsViewModel
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Voted directors";
+    Html.RenderPartial("_SearchFull");
+
+}
+@section styles{
+    @Styles.Render(
+        "~/bundle/styles/pagedList")
+}
+<section class="container">
+    <div class="col-sm-8 col-md-9 col-sm-push-4 col-md-push-3">
+        <div class="movie">
+
+            <div class="devider-wrapper">
+                <div class="devider"></div>
+            </div>
+            <h2 class="page-heading">List of voted directors</h2>
+
+            <div style="width:70%">
+                <table>
+                    @{var count = 1;}
+
+                    @foreach (var director in Model.VotedDirectors)
+                    {
+                        <tr class="@(count %2 ==0 ? "rates rates--top" : "rates")">
+                            <td class="rates__obj">
+                                <div class="movie__rate">
+
+                                    <span class="movie__rating">@director.CurrentUserVoteScore</span>
+                                    @Html.ActionLink("   " + director.Director.Name, "Details", "Director", new { id = director.Director.Id }, new { @class = "movieTitleInTable" })
+                                </div>
+                            </td>
+
+                        </tr>
+                        count++;
+                    }
+                </table>
+                @Html.PagedListPager(Model.VotedDirectors, page => Url.Action("VotedDirectors",
+                    new { page }))
+            </div>
+        </div>
+    </div>
+    @Html.Partial("_UserMenu")
+</section>

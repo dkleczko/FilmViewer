@@ -1,0 +1,132 @@
+﻿@using FilmViewer.AppHelpers
+@using FilmViewer.Roles
+@model FilmViewer.Models.Director.DetailsViewModel
+
+@{
+    Html.RenderPartial("_SearchFull");
+}
+@section JavaScript
+{
+    <script type="text/javascript">
+        $('.score').click(function () {
+
+
+            $(this).html('<span class="rates__done">Dziękujemy za głos!</span>');
+            $.ajax({
+                url: '../../Director/AddVote',
+                type: 'POST',
+                data: JSON.stringify({ 'stars': $(this).raty('score'), 'directorId': @Model.Director.Id }),
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                error: function (xhr) {
+                    alert('Error: ' + xhr.statusText);
+                },
+                success: function (result) {
+                    $('.movie__rating').text(result.VoteResult);
+                },
+                async: true,
+                processData: false
+            });
+
+        });
+        $(function () {
+            createRaty('score', @Model.Director.CurrentUserVote);
+            init_Scroll();
+        });
+    </script>
+}
+<section class="container">
+    <h2 class="page-heading heading--outcontainer"> </h2>
+
+    <div class="col-sm-8 col-md-9 col-sm-push-4 col-md-push-3">
+        <div class="movie">
+            <h2 class="page-heading">@Model.Director.Name</h2>
+            <div class="movie__info">
+                <div class="col-sm-6 col-md-4 movie-mobile">
+                    <div class="movie__images">
+                        <span class="movie__rating">
+                            @(Model.Director.VoteCount != 0 ?
+                                                                Math.Round((decimal)Model.Director.VoteScores / (decimal)Model.Director.VoteCount, 1).ToString() : "0,0")
+                        </span>
+                        <img alt="" src="@Url.Content(FileHelpers.GetPhotoPath(Model.Director.Folder, Model.Director.PhotoUrl, "http://placehold.it/380x600"))">
+                    </div>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <div class="movie__rate">Your vote: <div id='score' class="score"></div></div>
+
+                    }
+                    else
+                    {
+
+                        <div class="movie__rate disabled">Your vote: <div id='score' class="score"></div></div>
+
+                    }
+                </div>
+                <div class="col-sm-6 col-md-8">
+                    <p class="movie__option"><strong>Born: </strong>@(Model.Director.Birthdate.HasValue ? Model.Director.Birthdate.Value.ToShortDateString() : "")</p>
+                    <p class="movie__option"><strong>Birth place: </strong>@Model.Director.BirthPlace</p>
+                    <p class="movie__option"><strong>Marital Status: </strong>@Model.Director.MaritalStatus</p>
+
+                    <div class="movie__btns">
+                        @if (User.IsInRole(CustomRoles.Moderator))
+                        {
+                            @Html.ActionLink("Edit", "DirectorEdit", "Moderator", new { id = Model.Director.Id }, new { @class = "btn btn-md btn--warning btn--book login-window" })
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <h2 class="page-heading">Biography</h2>
+            <p class="movie__describe">@Model.Director.Biography</p>
+
+            <h2 class="page-heading">Photos</h2>
+            <div class="movie__media">
+                <div class="movie__media-switch">
+                    <a href="#" class="watchlist list--photo" data-filter="media-photo">@Model.Director.Photos.Count photos</a>
+                </div>
+                <div class="swiper-container">
+                    <div class="swiper-wrapper">
+                        @foreach (var photo in Model.Director.Photos)
+                        {
+                            <div class="swiper-slide media-photo">
+                                <a href="@Url.Content(FileHelpers.GetPhotoPath(Model.Director.Folder, photo.Path, "http://placehold.it/380x600"))" class="movie__media-item">
+                                    <img alt="" src="@Url.Content(FileHelpers.GetPhotoPath(Model.Director.Folder, photo.Path, "http://placehold.it/380x600"))" class="image_FullHeight">
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+            </div>
+            <h2 class="page-heading">Movies</h2>
+            <div>
+                <div class="rates-wrapper">
+                    <table>
+                        <colgroup class="col-width-lg"> </colgroup>
+                        <colgroup class="col-width-sm"> </colgroup>
+
+                        <colgroup class="col-width"></colgroup>
+                        @{int i = 1;}
+                        @foreach (var movie in Model.Director.Movies)
+                        {
+                            <tr class="rates rates--top">
+                                <td class="rates__obj">
+                                    @Html.ActionLink(String.Format("{0}. {1}", i, movie.Title), "Details", "Movie", new { id = movie.MovieId }, new { @class = "rates__obj-name" })
+                                </td>
+
+                                <td class="rates__result">
+                                    @(movie.VoteCount != 0 ? Math.Round((decimal)movie.VoteScores / (decimal)movie.VoteCount, 1).ToString() : "0,0")
+                                </td>
+                                <td class="rates__vote">@movie.VoteCount votes</td>
+                            </tr>
+                            i++;
+                        }
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <aside class="col-sm-4 col-md-3 col-sm-pull-8 col-md-pull-9"></aside>
+</section>
+

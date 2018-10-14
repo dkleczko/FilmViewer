@@ -1,0 +1,73 @@
+﻿@using FilmViewer.Models
+@using FilmViewer.Statics
+@model FilmViewer.Models.Moderator.EditCategoryViewModel
+
+@{
+    ViewBag.Title = "Create category";
+    Html.RenderPartial("_SearchFull");
+}
+@section styles{
+    @Styles.Render(
+        "~/bundles/styles/panelCreate")
+}
+<section class="container">
+    <div class="col-sm-8 col-md-9 col-sm-push-4 col-md-push-3">
+
+        <div class="devider-wrapper">
+            <div class="devider"></div>
+        </div>
+        <h2 class="page-heading">Creation panel</h2>
+        <div class="panelCreate panelCreate-primary dialog-panel">
+            <div class="panelCreate-heading">
+                <h2 class="page-heading">Category edit panel</h2>
+            </div>
+            <div class="panelCreate-body">
+                @using (Html.BeginForm("EditCategory", "Moderator", FormMethod.Post, new { @class = "form-horizontal" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(p => p.CategoryId)
+                    if (!Html.ViewData.ModelState.IsValid)
+                    {
+                        @Html.ValidationSummary("", new { @class = "inv-em alert alert-danger" })
+                    }
+                    if (TempData[UserMessages.UserMessage] != null)
+                    {
+                        var message = (MessageViewModel)TempData[UserMessages.UserMessage];
+
+                        <div class="alert @message.CssClass">
+                            <span class="icon-flag"></span>
+                            @message.Message
+                            <a class="close" data-dismiss="alert" href="#" aria-hidden="true"></a>
+                        </div>
+                    }
+
+                    <div class="form-group" style="margin-bottom:10px!important">
+                        <label class="control-label col-md-2 col-md-offset-2">Category Name</label>
+                        <div class="col-md-7">
+                            <div class="form-group">
+                                <div class="col-md-11">
+                                    @Html.EditorFor(model => model.CategoryName, new { htmlAttributes = new { @class = "form-control", placeholder = "Category name" } })
+                                    @Html.ValidationMessageFor(model => model.CategoryName, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group internal">
+                        <div class="col-md-offset-4 col-md-3">
+                            <button class="btn btn-lg btn-danger" style="float:right" id="resetButton" type="reset">Reset</button>
+                        </div>
+                        <div class="col-md-3">
+                            <button class="btn btn-lg btn-primary" type="submit">Save</button>
+
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    @Html.Partial("_ModeratorMenu")
+
+
+</section>
+

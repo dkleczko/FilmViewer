@@ -1,0 +1,198 @@
+﻿@using FilmViewer.AppHelpers
+@model FilmViewer.Models.Moderator.ActorEditViewModel
+
+@{
+    ViewBag.Title = "ActorEdit";
+    Html.RenderPartial("_SearchFull");
+
+}
+@section styles{
+    @Styles.Render(
+                    "~/bundles/styles/dropzone",
+                    "~/bundles/styles/datepicker",
+                    "~/bundles/styles/panelCreate")
+}
+@section scripts{
+    @Scripts.Render(
+                    "~/bundles/scripts/datepicker",
+                    "~/bundles/scripts/dropzone")
+}
+@section JavaScript
+{
+    <script type="text/javascript">
+        Dropzone.options.mydropzone = {
+        acceptedFiles: 'image/*',
+        url: '@Url.Action("AddMorePhotoToActor", "Moderator", new { actorId  = Model.ActorId} )',
+        maxFilesize: 1000,
+        parallelUploads: 20,
+        uploadMultiple: true,
+        enqueueForUpload: false,
+        addRemoveLinks: true,
+        autoProcessQueue:
+            true,
+        autoDiscover: false,
+        paramName:
+            'files',
+        previewsContainer: '#dropzonePreview',
+        clickable:
+            true,
+        accept: function(file, done) {
+            done();
+        },
+        error: function(file, msg) {
+            alert(msg);
+        },
+        init: function() {
+
+            var myDropzone = this;
+
+            var photos = @Html.Raw(Json.Encode(
+                             Model.Photos.Select(photo => new {
+                                 id = photo.PhotoId,
+                                 path = FileHelpers.GetPhotoPath(Model.Folder, photo.Path),
+                                 name = FileHelpers.GetPhotoName(photo.Path)
+                                }
+                            )));
+
+            $.each(photos,
+                function(key, value) {
+                    var mockFile = { name: value.name };
+
+                    myDropzone.emit("addedfile", mockFile);
+                    myDropzone.options.thumbnail.call(myDropzone, mockFile, '/File/Image?serverPath=' + value.path);
+                    myDropzone.files.push(mockFile);
+                    myDropzone.emit("complete", mockFile);
+                });
+            this.on("removedfile",
+                function(file) {
+                    var x = confirm('Do you want to delete?');
+                    if (!x) return false;
+
+                    $.post('/Moderator/RemoveActorPhoto',
+                        { fileName: file.name, actorId: @Model.ActorId },
+                        function(data, status) {
+                            alert('file deleted');
+                        });
+                    return true;
+                });
+
+        }
+
+    };
+    $(document).ready(function () {
+        $('#birthdate').Zebra_DatePicker();
+        $('#birthdate').val('@Model.BirthdateString').data('Zebra_DatePicker');
+
+    });
+    </script>
+}
+<section class="container">
+    <div class="col-sm-8 col-md-9 col-sm-push-4 col-md-push-3">
+        <div class="movie">
+
+            <div class="devider-wrapper">
+                <div class="devider"></div>
+            </div>
+            <h2 class="page-heading">Edit Panel</h2>
+
+
+
+            <div class="panelCreate panelCreate-primary dialog-panel">
+                <div class="panelCreate-heading">
+                    <h2 class="page-heading">Actor</h2>
+                </div>
+                <div class="panelCreate-body">
+                    <div class="tabs tabs-horisontal">
+                        <ul class="nav nav-tabs" id="hTab">
+                            <li class="active"><a href="#actor" data-toggle="tab">Data</a></li>
+                            <li><a href="#photos" data-toggle="tab">Photos</a></li>
+
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="actor">
+                                @using (Html.BeginForm("ActorEdit", "Moderator", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal" }))
+                                {
+                                    @Html.HiddenFor(p => p.ActorId)
+                                    <div>
+                                        @Html.AntiForgeryToken()
+                                        @if (!Html.ViewData.ModelState.IsValid)
+                                        {
+                                            @Html.ValidationSummary("", new { @class = "inv-em alert alert-danger" })
+                                        }
+
+                                        <div class="form-group internal">
+                                            <label class="control-label col-md-2 col-md-offset-2">Name</label>
+                                            <div class="col-md-7">
+                                                <div class="col-md-11">
+
+                                                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", placeholder = "Name and surname of actor" } })
+                                                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group internal">
+                                            <label class="control-label col-md-2 col-md-offset-2">Marital Status</label>
+                                            <div class="col-md-7">
+                                                <div class="col-md-11">
+                                                    @Html.EditorFor(model => model.MaritalStatus, new { htmlAttributes = new { @class = "form-control", placeholder = "Marital Status" } })
+                                                    @Html.ValidationMessageFor(model => model.MaritalStatus, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group internal">
+                                            <label class="control-label col-md-2 col-md-offset-2">Birth</label>
+                                            <div class="col-md-7">
+
+                                                <div class="col-md-11">
+                                                    @Html.EditorFor(model => model.Birthdate, new { htmlAttributes = new { @class = "form-control", placeholder = "Birthdate", id = "birthdate" } })
+                                                    @Html.ValidationMessageFor(model => model.Birthdate, "", new { @class = "text-danger" })
+                                                </div>
+                                                <div class="col-md-11 internal">
+                                                    @Html.EditorFor(model => model.BirthPlace, new { htmlAttributes = new { @class = "form-control", placeholder = "Birthplace", } })
+                                                    @Html.ValidationMessageFor(model => model.BirthPlace, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group internal">
+                                            <label class="control-label col-md-2 col-md-offset-2">Biography</label>
+                                            <div class="col-md-7">
+                                                <div class="col-md-11">
+
+                                                    @Html.EditorFor(model => model.Biography, new { htmlAttributes = new { @class = "form-control", rows = 5 } })
+                                                    @Html.ValidationMessageFor(model => model.Biography, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-offset-4 col-md-3">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <button class="btn btn-lg btn-primary" type="submit">Save</button>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+                            </div>
+                            <div class="tab-pane" id="photos">
+
+                                @using (Html.BeginForm("AddMorePhotoToActor", "Moderator", FormMethod.Post, new { enctype = "multipart/form-data", id = "mydropzone", @class = "dropzone" }))
+                                {
+                                    <div id="dropzonePreview"></div>
+                                }
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @Html.Partial("_ModeratorMenu")
+
+
+</section>
+

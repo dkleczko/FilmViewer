@@ -1,0 +1,30 @@
+﻿@using FilmViewer.AppHelpers
+@model FilmViewer.Models.Home.Top6RatesMoviesViewModel
+    
+<div class="movie-best">
+    <div class="col-sm-10 col-sm-offset-1 movie-best__rating">Best Rates</div>
+    <div class="col-sm-12 change--col">
+        @foreach (var movie in Model.Top6Movies)
+        {
+            <div class="movie-beta__item ">
+                <img alt='' src="@Url.Content(FileHelpers.GetPhotoPath(movie.Folder, movie.PhotoUrl, "http://placehold.it/380x600"))">
+                <span class="best-rate">
+                    @(movie.AverageScore)
+                </span>
+                <ul class="movie-beta__info">
+                    <li><span class="best-voted">@movie.VoteCount votes!</span></li>
+                    <li>
+                        <p class="movie__time">@movie.Duration min</p>
+                        <p>@movie.CommentsCount comments</p>
+                    </li>
+                    <li class="last-block">
+                        @Html.ActionLink("More", "Details", "Movie", new { id = movie.MovieId }, new { @class = "slide__link" })
+                    </li>
+                </ul>
+            </div>
+        }
+
+    </div>
+    <div class="col-sm-10 col-sm-offset-1 movie-best__check">Check movies!</div>
+
+</div>

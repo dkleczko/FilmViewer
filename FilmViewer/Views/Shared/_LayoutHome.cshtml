@@ -1,0 +1,47 @@
+﻿@using FilmViewer.Roles
+<html>
+
+<head>
+    @RenderSection("meta", false)
+    <title>FilmViewer</title>
+    <!-- Fonts -->
+    <!-- Font awesome - icon font -->
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <!-- Roboto -->
+    <link href="http://fonts.googleapis.com/css?family=Roboto:400,100,700" rel="stylesheet" type="text/css">
+    <!-- Open Sans -->
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:800italic" rel="stylesheet" type="text/css">
+
+    @Styles.Render("~/bundles/styles/menu")
+    @RenderSection("styles", false)
+
+
+    @Scripts.Render("~/bundles/scripts/jquery")
+
+    @Scripts.Render("~/bundles/scripts/menu")
+
+    @Scripts.Render("/bundles/scripts/base")
+
+    @Scripts.Render("~/bundles/scripts/bootstrap")
+
+    @RenderSection("scripts", required: false)
+
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+
+    @RenderSection("JavaScript", required: false)
+</head>
+
+<body>
+    <div class=" wrapper">
+
+        <header class="header-wrapper header-wrapper--home">
+            @Html.Partial("_LayoutMenuContainer")
+        </header>
+        @RenderBody()
+
+        <div class="clearfix"></div>
+        @Html.Partial("_Footer")
+    </div>
+</body>
+
+</html>

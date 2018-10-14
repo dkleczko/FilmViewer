@@ -1,0 +1,17 @@
+﻿@using FilmViewer.Business.Dto.Domain.Enum
+@model FilmViewer.Models.Home.MainMoviesListViewModel
+    
+<ul>
+    @foreach (var mainMovie in Model.MainMovieList)
+    {
+        if (mainMovie.SliderType == SliderTypeDto.Right)
+        {
+            Html.RenderPartial("_SlitherTypeRight", mainMovie);
+        }
+        else if (mainMovie.SliderType == SliderTypeDto.Top)
+        {
+            Html.RenderPartial("_SlitherTypeTop", mainMovie);
+        }
+
+    }
+</ul>

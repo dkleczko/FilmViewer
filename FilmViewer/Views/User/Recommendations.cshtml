@@ -1,0 +1,48 @@
+﻿@using FilmViewer.AppHelpers
+@model FilmViewer.Models.User.RecommendationsViewModel
+@{
+    ViewBag.Title = "Recommendations";
+    Html.RenderPartial("_SearchFull");
+
+}
+
+
+<section class="container">
+    <h2 class="page-heading heading--outcontainer">Prepared Specially for you</h2>
+
+    <div class="col-sm-8 col-md-9 col-sm-push-4 col-md-push-3">
+
+        @foreach (var movie in Model.Movies)
+        {
+            <div class="movie movie--preview popularity">
+                <div class="col-sm-5 col-md-3">
+                    <div class="movie__images">
+                        <img alt='' src="@Url.Content(FileHelpers.GetPhotoPath(movie.Folder, movie.PhotoUrl, "http://placehold.it/380x600"))">
+
+                    </div>
+
+                </div>
+                <div class="col-sm-7 col-md-9">
+                    @Html.ActionLink(movie.Title, "Details", "Movie", new { id = movie.MovieId }, new { @class = "actor__title link--huge" })
+
+
+                    <div class="preview-footer">
+                        <div class="movie__rate">
+                            W twoim guście:
+                            <span class="movie__rate-number"></span>
+                            <span class="movie__rating">
+                                @(Math.Round(movie.Similarity,2) *100)%
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        }
+
+    </div>
+
+    @Html.Partial("_UserMenu")
+
+
+</section>

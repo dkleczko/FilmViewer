@@ -1,0 +1,82 @@
+﻿@using FilmViewer.Roles
+
+<div class="container">
+    <a href="@Url.Action("Index", "Home")" class="logo titleFont">
+        FilmViewer
+    </a>
+
+    <nav id="navigation-box">
+        <a href="#" id="navigation-toggle">
+            <span class="menu-icon">
+                <span class="icon-toggle" role="button" aria-label="Toggle Navigation">
+                    <span class="lines"></span>
+                </span>
+            </span>
+        </a>
+
+        <ul id="navigation">
+            @if (User.IsInRole(CustomRoles.User))
+            {
+                <li>
+                    <span class="sub-nav-toggle plus"></span>
+                    @Html.ActionLink("My Filmviewer", "Index", "User", null, null)
+                    <ul>
+                        <li class="menu__nav-item">@Html.ActionLink("Voted Movies", "VotedMovies", "User", null, new { @class = "category__item" })</li>
+                        <li class="menu__nav-item">@Html.ActionLink("Voted Actors", "VotedActors", "User", null, new { @class = "category__item" })</li>
+                        <li class="menu__nav-item">@Html.ActionLink("Voted Directors", "VotedDirectors", "User", null, new { @class = "category__item" })</li>
+                        <li class="menu__nav-item">@Html.ActionLink("Favourite Movies", "Favourites", "User", null, new { @class = "category__item" })</li>
+                        <li class="menu__nav-item">@Html.ActionLink("Recommendations", "Recommendations", "User", null, new { @class = "category__item" })</li>
+
+                    </ul>
+
+                </li>
+            }
+            @if (User.IsInRole(CustomRoles.Moderator))
+            {
+                <li>
+                    <span class="sub-nav-toggle plus"></span>
+                    @Html.ActionLink("Moderator Panel", "Index", "Moderator")
+                    <ul>
+                        @Html.Partial("_LayoutModeratorLinks")
+                    </ul>
+                </li>
+            }
+            @if (User.IsInRole(CustomRoles.Admin))
+            {
+                <li>
+                    <span class="sub-nav-toggle plus"></span>
+                    @Html.ActionLink("Administrator Panel", "Index", "Admin")
+                </li>
+            }
+            <li>
+                <span class="sub-nav-toggle plus"></span>
+                @Html.ActionLink("Rank", "RatingList", "Movie")
+                <ul>
+                    @Html.Partial("_RankLinks")
+                </ul>
+            </li>
+            <li>
+                <span class="sub-nav-toggle plus"></span>
+                <a href="#">Categories</a>
+                @Html.Action("GetAllCategoriesToMenu", "Category")
+            </li>
+
+            <li>
+                <span class="sub-nav-toggle plus"></span>
+                @Html.ActionLink("Actors", "Index", "Actor")
+            </li>
+            <li>
+                <span class="sub-nav-toggle plus"></span>
+                @Html.ActionLink("Directors", "Index", "Director")
+            </li>
+            <li>
+                <span class="sub-nav-toggle plus"></span>
+                @Html.ActionLink("Movies", "Index", "Movie")
+            </li>
+        </ul>
+    </nav>
+
+    @Html.Partial("_LoginPartial")
+
+
+</div>

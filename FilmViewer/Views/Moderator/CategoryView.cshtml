@@ -1,0 +1,80 @@
+﻿@model FilmViewer.Models.Moderator.CategoryViewViewModel
+@using FilmViewer.Models
+@using FilmViewer.Statics
+@using PagedList.Mvc;
+
+
+@{
+    ViewBag.Title = "CategoryView";
+    Html.RenderPartial("_SearchFull");
+
+}
+@section styles{
+    @Styles.Render(
+            "~/bundles/styles/panelCreate")
+}
+<section class="container">
+    <div class="col-sm-8 col-md-9 col-sm-push-4 col-md-push-3">
+        <div class="movie">
+
+            <div class="devider-wrapper">
+                <div class="devider"></div>
+            </div>
+            <h2 class="page-heading">Category list</h2>
+            <div class="select-area">
+                @Html.Partial("_CategorySearch")
+
+                @if (TempData[UserMessages.UserMessage] != null)
+                {
+                    var message = (MessageViewModel)TempData[UserMessages.UserMessage];
+
+                    <div class="alert @message.CssClass">
+                        <span class="icon-flag"></span>
+                        @message.Message
+                        <a class="close" data-dismiss="alert" href="#" aria-hidden="true"></a>
+                    </div>
+                }
+            </div>
+            <div>
+                <table>
+                    <tr>
+                        <th>Name</th>
+                        <th></th>
+
+                    </tr>
+                    <colgroup class="col-width-lg"></colgroup>
+                    <colgroup class="col-width"></colgroup>
+                    @{var count = 1;}
+
+                    @foreach (var category in Model.CategoryList)
+                    {
+                        <tr class="@(count %2 ==0 ? "rates rates--top" : "rates")">
+                            <td class="rates__obj">@count @category.CategoryName</td>
+                            <td class="rates__vote">
+                                @Html.ActionLink("Edit", "EditCategory", new { id = category.CategoryId }, new { @class = "btn btn-md btn--warning" })
+                                @using ((Html.BeginForm("DeleteCategory", "Moderator", FormMethod.Post)))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    @Html.Hidden("id", category.CategoryId)
+                                    <button class="btn btn-md btn--danger" type="submit">Delete</button>
+                                }
+                            </td>
+
+                        </tr>
+                        count++;
+                    }
+                </table>
+                @Html.PagedListPager(Model.CategoryList, page => Url.Action("CategoryView",
+                              new { page, currentFilter = ViewBag.CurrentFilter }))
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+    @Html.Partial("_ModeratorMenu")
+
+
+</section>

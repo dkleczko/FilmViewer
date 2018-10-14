@@ -1,0 +1,145 @@
+﻿@using FilmViewer.AppHelpers
+@model FilmViewer.Models.Movies.MovieListViewModel
+@{
+    Html.RenderPartial("_SearchFull");
+}
+@section JavaScript
+{
+    <script type="text/javascript">
+
+        $(function () {
+            init_Scroll();
+        });
+        $('.score').click(function () {
+
+            $(this).children().hide();
+            var divParent = $(this).parent();
+
+            $(this).html('<span class="rates__done">Dziękujemy za głos!</span>')
+            $.ajax({
+                url: 'Movie/AddVote',
+                type: 'POST',
+                data: JSON.stringify({ "stars": $(this).raty('score'), "movieId": $(this).attr('id') }),
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                error: function (xhr) {
+                    alert('Error: ' + xhr.statusText);
+                },
+                success: function (result) {
+                    divParent.children(".movie__rate-number").text(result.VoteCount);
+                    divParent.children(".movie__rating").text(result.VoteScores);
+                },
+                async: true,
+                processData: false
+            });
+
+        });
+    </script>
+}
+<section class="container">
+    <div class="col-sm-8 col-md-9">
+        <h2 class="page-heading">Movies</h2>
+        @foreach (var movie in Model.Movies)
+        {
+            <div class="movie movie--preview popularity">
+                <div class="col-sm-5 col-md-3">
+                    <div class="movie__images">
+                        <img alt='' src="@Url.Content(FileHelpers.GetPhotoPath(movie.Folder, movie.PhotoUrl, "http://placehold.it/380x600"))">
+                    </div>
+                    <div class="movie__feature">
+                        <a href="#" class="movie__feature-item movie__feature--comment">@(movie.CommentsCount)</a>
+                        <a href="#" class="movie__feature-item movie__feature--video">@(movie.VideosCount)</a>
+                        <a href="#" class="movie__feature-item movie__feature--photo">@(movie.PhotosCount)</a>
+                    </div>
+                </div>
+
+                <div class="col-sm-7 col-md-9">
+                    @Html.ActionLink(movie.Title, "Details", "Movie", new { id = movie.MovieId }, new { @class = "movie__title link--huge" })
+                    <p class="movie__time">@movie.Duration min</p>
+
+                    <p class="movie__option">
+                        <strong>Production Country: </strong>@movie.ProductionCountries
+                    </p>
+                    <p class="movie__option">
+                        <strong>Categories: </strong>
+                        @if (movie.Categories != null)
+                        {
+                            foreach (var cat in movie.Categories)
+                            {
+                                @Html.ActionLink(cat.CategoryName + " ", "Index", "Movie", new { category = cat.CategoryId }, null)
+                            }
+                        }
+                    </p>
+                    <p class="movie__option"><strong>Production Date: </strong>@(movie.PremiereDate.HasValue ? movie.PremiereDate.Value.ToShortDateString() : "")</p>
+                    <p class="movie__option">
+                        <strong>Director: </strong>
+                        @if (!string.IsNullOrEmpty(movie.DirectorName))
+                        {
+                            @Html.ActionLink(movie.DirectorName, "Details", "Actor", new { id = movie.DirectorId }, null)
+                        }
+
+
+                    </p>
+
+                    <div class="movie__btns">
+                        @if (User.Identity != null && User.Identity.IsAuthenticated && !movie.IsUserFavourite)
+                        {
+                            <button class="watchlist" name="addToFavourites" id="@movie.MovieId">Add to favourites</button>
+                        }
+                        else if (User.Identity != null && User.Identity.IsAuthenticated && movie.IsUserFavourite)
+                        {
+                            <button class="watchlist" name="addToFavourites" id="@movie.MovieId">Delete from favourites</button>
+
+                        }
+
+                    </div>
+
+                    <div class="preview-footer">
+                        <div class="movie__rate" id="@movie.MovieId">
+                            @if (User.Identity != null && User.Identity.IsAuthenticated && movie.HasUserVoteActor)
+                            {
+                                <div class="score" id="@movie.MovieId">
+                                </div>
+                                <script type="text/javascript">
+                                    createRaty(@movie.MovieId, @movie.CurrentUserVote)
+                                </script>
+                            }
+                            else
+                            {
+                                <div class="score @(User.Identity == null || !User.Identity.IsAuthenticated ? "disabled" : "")" id="@movie.MovieId">
+                                </div>
+                                <script type="text/javascript">
+                                    createRaty(@movie.MovieId , 0)
+                                </script>
+                            }
+                            <span class="movie__rate-number">@movie.VoteCount votes</span>
+                            <span class="movie__rating">
+                                @(movie.VoteCount != 0 ?
+                                                        Math.Round(((double)movie.VoteScores / (double)movie.VoteCount), 1).ToString() : "0,0")
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="clearfix"></div>
+
+            </div>
+        }
+        <div class="coloum-wrapper">
+            <div class="pagination paginatioon--full">
+                @Html.ActionLink("prev", "Index", "Movie",
+                                            new { page = Model.Movies.PageNumber - 1, searchString = ViewBag.CurrentFilter, searchBy = ViewBag.SearchBy },
+                                   new { @class = "pagination__prev " + (!Model.Movies.IsFirstPage ? "" : "disabled") })
+                @Html.ActionLink("next", "Index", "Movie",
+                                                     new { page = Model.Movies.PageNumber + 1, searchString = ViewBag.CurrentFilter, searchBy = ViewBag.SearchBy },
+                          new { @class = "pagination__next " + (!Model.Movies.IsLastPage ? "" : "disabled") })
+
+            </div>
+        </div>
+    </div>
+    <aside class="col-sm-4 col-md-3">
+        <div class="sitebar" id="sidebard">
+            @Html.Action("MostCommentedMovies")
+        </div>
+    </aside>
+</section>

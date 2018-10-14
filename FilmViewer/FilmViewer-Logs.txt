@@ -1,0 +1,2 @@
+ActionMethodDispatcher.Execute => <no type>.lambda_method => HomeController.Index System.NullReferenceException: Message For Dikej
+   w FilmViewer.Controllers.HomeController.Index() w C:\Users\dklec\Desktop\Projects\FilmViewer\in-ynierka\FilmViewer\Controllers\HomeController.cs:wiersz 29

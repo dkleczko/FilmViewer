@@ -1,0 +1,8 @@
+﻿@model List<FilmViewer.Business.Dto.Domain.CategoryDto>
+
+<ul>
+    @foreach (var category in Model)
+    {
+        <li class="menu__nav-item">@Html.ActionLink(category.CategoryName, "Index", "Movie", new { category = category.CategoryId }, null)</li>
+    }
+</ul>

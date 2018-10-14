@@ -1,0 +1,9 @@
+﻿<div class="search-wrapper">
+    <div class="container--add">
+        @using (Html.BeginForm("MetadataView", "Moderator", FormMethod.Get, htmlAttributes: new { @class = "search" }))
+        {
+            <input type="text" name="searchString" class="search__field" placeholder="Search metadata" value="@ViewBag.MetadataFilter">
+            <button type='submit' class="btn btn-md btn--danger search__button">Search</button>
+        }
+    </div>
+</div>

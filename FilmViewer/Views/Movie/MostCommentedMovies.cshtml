@@ -1,0 +1,11 @@
+﻿@model FilmViewer.Models.Movies.MostCommentedMoviesViewModel
+
+<div class="category category--discuss category--count marginb-sm mobile-category ls-cat">
+    <h3 class="category__title">Most commented<br><span class="title-edition">productions</span></h3>
+    <ol>
+        @foreach (var movie in Model.Movies)
+        {
+            <li>@Html.ActionLink(movie.Title, "Details", "Movie", new { id = movie.MovieId }, new { @class = "category__item" })</li>
+        }
+    </ol>
+</div>

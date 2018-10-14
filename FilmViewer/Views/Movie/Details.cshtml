@@ -1,0 +1,249 @@
+﻿@model FilmViewer.Models.Movies.DetailsViewModel
+@using FilmViewer.AppHelpers
+@using FilmViewer.Roles
+@{
+    ViewBag.Title = Model.Movie.Title;
+    Html.RenderPartial("_SearchFull");
+}
+
+@section JavaScript
+{
+    <script type="text/javascript">
+        $(function()
+        {
+            init_Scroll();
+            createRaty("score",@Model.Movie.CurrentUserVote);
+        });
+        $('textarea').keyup(function () {
+            var maxlimit = 250;
+            var field = $(this);
+            if (field[0].value.length > maxlimit) {
+                field[0].value = field[0].value.substring(0, maxlimit);
+            }
+            $('#counterMessage')[0].textContent = maxlimit - field[0].value.length + " letters left";
+        });
+
+        $('.score').click(function () {
+            $(this).html('<span class="rates__done">Thanks for vote!</span>');
+            $.ajax({
+                url: '../AddVote',
+                type: 'POST',
+                data: JSON.stringify({ "stars": $(this).raty('score'), "movieId": @Model.Movie.MovieId }),
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                error: function (xhr) {
+                    alert('Something wrong happen');
+                },
+                success: function (result) {
+                    $(".movie__rating").text(result.VoteScores);
+                },
+                async: true,
+                processData: false
+            });
+
+        });
+    </script>
+}
+<section class="container">
+    <div class="col-sm-8 col-md-9">
+        <div class="movie">
+            <h2 class="page-heading">@Model.Movie.Title</h2>
+
+            <div class="movie__info">
+                <div class="col-sm-6 col-md-4 movie-mobile">
+                    <div class="movie__images">
+                        <span class="movie__rating">
+                            @(Model.Movie.VoteCount != 0 ?
+                                        Math.Round((decimal)Model.Movie.VoteScores / (decimal)Model.Movie.VoteCount, 1).ToString() : "0,0")
+                        </span>
+                        <img alt="" src="@Url.Content(FileHelpers.GetPhotoPath(Model.Movie.Folder, Model.Movie.PhotoUrl, "http://placehold.it/380x600"))">
+                    </div>
+
+                    @if (User.Identity != null && User.Identity.IsAuthenticated)
+                    {
+                        <div class="movie__rate">Your vote: <div id='score' class="score"></div></div>
+
+                    }
+                    else
+                    {
+
+                        <div class="movie__rate disabled">Your vote: <div id='score' class="score"></div></div>
+                    }
+                </div>
+
+                <div class="col-sm-6 col-md-8">
+                    <p class="movie__time">@Model.Movie.Duration min</p>
+
+                    <p class="movie__option">
+                        <strong>Production country: </strong>@Model.Movie.ProductionCountries
+                    </p>
+                    <p class="movie__option"><strong>Production year: </strong>@(Model.Movie.PremiereDate.HasValue ? Model.Movie.PremiereDate.Value.Year.ToString() : "")</p>
+                    <p class="movie__option">
+                        <strong>Categories: </strong>@if (Model.Movie.Categories != null)
+                        {
+                            foreach (var cat in Model.Movie.Categories)
+                            {
+                                @Html.ActionLink(cat.CategoryName + " ", "Index", new { category = cat.CategoryId })
+
+                            }
+                        }
+                    </p>
+                    <p class="movie__option"><strong>Production date: </strong>@(Model.Movie.PremiereDate.HasValue ? Model.Movie.PremiereDate.Value.ToShortDateString() : "")</p>
+                    <p class="movie__option">
+                        <strong>Director: </strong>
+                        @if (!string.IsNullOrEmpty(Model.Movie.DirectorName))
+                        {
+                            @Html.ActionLink(Model.Movie.DirectorName, "Details", "Actor", new { id = Model.Movie.DirectorId }, new { })
+                        }
+
+                    </p>
+
+                    <a href="#" class="comment-link">Comments:  @(Model.Movie.CommentsCount)</a>
+
+                    <div class="movie__btns">
+                        @if (User.IsInRole(CustomRoles.Moderator))
+                        {
+                            @Html.ActionLink("Edit", "MovieEdit", "Moderator", new { id = Model.Movie.MovieId }, new { @class = "btn btn-md btn--warning btn--book login-window" })
+                        }
+                        @if (User.Identity != null && User.Identity.IsAuthenticated && !Model.Movie.IsUserFavourite)
+                        {
+                            <button class="watchlist" name="addToFavourites" id="@Model.Movie.MovieId">Add to favourites</button>
+                        }
+                        else if (User.Identity != null && User.Identity.IsAuthenticated && Model.Movie.IsUserFavourite)
+                        {
+                            <button class="watchlist" name="addToFavourites" id="@Model.Movie.MovieId">Remove from favourites</button>
+
+                        }
+                    </div>
+
+                    <div class="share">
+                        <span class="share__marker"></span>
+                        <div class="addthis_toolbox addthis_default_style ">
+                            <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+                            <a class="addthis_button_tweet"></a>
+                            <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <h2 class="page-heading">Opis</h2>
+
+            <p class="movie__describe">@Model.Movie.Content</p>
+
+            <h2 class="page-heading">Photos</h2>
+            <div class="movie__media">
+                <div class="movie__media-switch">
+                    <a href="#" class="watchlist list--photo" data-filter="media-photo">@Model.Movie.Photos.Count photos</a>
+                </div>
+                <div class="swiper-container">
+                    <div class="swiper-wrapper">
+                        @foreach (var photo in Model.Movie.Photos)
+                        {
+                            <div class="swiper-slide media-photo">
+                                <a href='@Url.Content(FileHelpers.GetPhotoPath(Model.Movie.Folder, Model.Movie.PhotoUrl, "http://placehold.it/380x600"))' class="movie__media-item">
+                                    <img alt='' src="@Url.Content(FileHelpers.GetPhotoPath(Model.Movie.Folder, Model.Movie.PhotoUrl, "http://placehold.it/380x600"))" class="image_FullHeight">
+                                </a>
+                            </div>
+                        }
+
+                    </div>
+                </div>
+
+            </div>
+
+            <h2 class="page-heading">Actors</h2>
+            <div style="width:90%!important">
+                <div class="rates-wrapper">
+                    <table>
+                        <colgroup class="col-width-lg"> </colgroup>
+                        <colgroup class="col-width"> </colgroup>
+
+                        <colgroup class="col-width-sm"> </colgroup>
+
+                        <colgroup class="col-width"></colgroup>
+                        @{int i = 1;}
+                        @foreach (var actor in Model.Movie.Actors)
+                        {
+                            <tr class="rates rates--top">
+                                <td class="rates__obj">
+                                    @Html.ActionLink(String.Format("{0}. {1}", i, actor.Name), "Details", "Actor", new { id = actor.Id }, new { @class = "rates__obj-name" })
+                                </td>
+
+                                <td class="rates__vote">
+                                    <img alt='' class="image-small" src="@Url.Content(FileHelpers.GetPhotoPath(actor.Folder, actor.PhotoUrl, "http://placehold.it/380x600"))">
+                                </td>
+                                <td class="rates__result">
+                                    @(actor.VoteCount != 0 ?
+                                                Math.Round((decimal)actor.VoteScores / (decimal)actor.VoteCount, 1).ToString() : "0,0")
+                                </td>
+                                <td class="rates__vote">@actor.VoteCount votes</td>
+                            </tr>
+                            i++;
+                        }
+                    </table>
+                </div>
+            </div>
+
+
+
+        </div>
+
+        <div class="clearfix"></div>
+
+        <h2 class="page-heading">Comments (@(Model.Movie.CommentsCount))</h2>
+
+        <div class="comment-wrapper">
+            @using (Html.BeginForm("AddComment", "Movie", FormMethod.Post, new { @class = "comment-form" }))
+            {
+                <textarea maxlength="250" class=" comment-form__text" name="content" placeholder="Please write your comment here"></textarea>
+                @Html.Hidden("movieId", Model.Movie.MovieId)
+                <label class="comment-form__info" name="counterMessage" id="counterMessage">250 letters left</label>
+                <button type='submit' class="btn btn-md btn--danger comment-form__btn @(User.Identity == null || !User.Identity.IsAuthenticated ? "disabled" : "")">Add comment</button>
+            }
+
+            <div class="comment-sets">
+                @if (Model.Comments != null)
+                {
+                    foreach (var com in Model.Comments)
+                    {
+                        <div class="comment">
+                            <div class="comment__images">
+                                <img alt='' src="~/Content/AvatarsDefault/default-avatar-50x50.jpg">
+                            </div>
+
+                            <a href='#' class="comment__author"><span class="social-used fa fa-vk"></span>@com.UserName</a>
+                            <p class="comment__date">@com.Date.ToShortDateString() | @com.Date.ToShortTimeString()</p>
+                            <p class="comment__message">@com.Text</p>
+                            @if (User.IsInRole("Moderator"))
+                            {
+                                @Html.ActionLink("Usuń", "DeleteComment", "Moderator", new { movieId = com.MovieId, commentId = com.CommentId },
+                                         new { @class = "comment__reply" });
+                            }
+
+                        </div>
+                    }
+                    <div class="comment-more">
+                        @Html.ActionLink("Show more comments", "Details", "Movie",
+                                 new { commentCount = Model.Comments.Count + 10 },
+                                 new { @class = "commentList " + (Model.Comments.Count + 10 > Model.Movie.CommentsCount ? "disabled" : "") })
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+
+    <aside class="col-sm-4 col-md-3">
+        <div class="sitebar" id="sidebard">
+            @Html.Action("SimilarMovies", new { movieId = Model.Movie.MovieId })
+        </div>
+    </aside>
+
+</section>
+
+<div class="clearfix"></div>
+
+

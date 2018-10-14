@@ -1,0 +1,33 @@
+﻿@using FilmViewer.Models
+@model LoginViewModel
+@{
+    Html.RenderPartial("_SearchFull");
+}
+
+
+
+@using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "loginPanel", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <p class="login__title">Login<br><span class="login-edition">Wellcome in FilmViewer</span></p>
+    <div class="field-wrap">
+        @if (!Html.ViewData.ModelState.IsValid)
+        {
+            @Html.ValidationSummary("", new { @class = "inv-em alert alert-danger" })
+        }
+
+        @Html.TextBoxFor(m => m.Email, new { @class = "login__input", placeholder = "Email" })
+        @Html.PasswordFor(m => m.Password, new { @class = "login__input", placeholder = "Password" })
+
+    </div>
+    <div class="login__control">
+        <button type='submit' class="btn btn-md btn--warning btn--wider">Login</button>
+        <br/>
+        @Html.ActionLink("Register!", "Register", null, new { @class = "btn btn--sign" })
+    </div>
+
+
+
+}
+
+

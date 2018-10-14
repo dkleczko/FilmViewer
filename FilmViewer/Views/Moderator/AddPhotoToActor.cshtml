@@ -1,0 +1,83 @@
+﻿@model FilmViewer.Models.Moderator.AddPhotoToActorViewModel
+@{
+    ViewBag.Title = "AddPhotoToActor";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    Html.RenderPartial("_SearchFull");
+
+}
+@section styles{
+    @Styles.Render(
+            "~/bundles/styles/dropzone",
+            "~/bundles/styles/panelCreate")
+}
+@section scripts{
+    @Scripts.Render(
+            "~/bundles/scripts/dropzone")
+}
+@section JavaScript
+{
+    <script type="text/javascript">
+
+        Dropzone.options.mydropzone = {
+            acceptedFiles: 'image/*',
+            url: '#',
+            maxFilesize: 1000,
+            parallelUploads: 20,
+            uploadMultiple: true,
+            enqueueForUpload: false,
+            addRemoveLinks: true,
+            autoProcessQueue: false, 
+            autoDiscover: false,
+            paramName: 'files', 
+            previewsContainer: '#dropzonePreview', 
+            clickable: true, 
+            accept: function (file, done) {
+                done();
+            },
+            error: function (file, msg) {
+                alert(msg);
+            },
+            init: function () {
+
+                var myDropzone = this;
+                $("#Send").on('click', function (e) {
+                    e.preventDefault();
+                    myDropzone.processQueue();
+                });
+                this.on('completemultiple', function () {
+                    window.location.href = '@Url.Action("Details", "Actor", new { id = Model.Actor.Id })';
+                });
+
+            } 
+
+        };
+    </script>
+}
+<section class="container">
+    <div class="col-sm-8 col-md-9 col-sm-push-4 col-md-push-3">
+        <div class="movie">
+            <div class="devider-wrapper">
+                <div class="devider"></div>
+            </div>
+            <h2 class="page-heading">Creation Panel</h2>
+            <div class="panelCreate panelCreate-primary dialog-panel">
+                <div class="panelCreate-heading">
+                    <h2 class="page-heading">Add photo to @Model.Actor.Name</h2>
+                </div>
+                <div class="panelCreate-body">
+                    @using (Html.BeginForm("AddPhotoToActor", "Moderator", FormMethod.Post, new { enctype = "multipart/form-data", id = "mydropzone", @class = "dropzone" }))
+                    {
+                        Html.Hidden("id", Model.Actor.Id);
+                        <div id="dropzonePreview"></div>
+
+                        <button class="btn btn-lg btn-primary" type="submit" id="Send">Send</button>
+
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    @Html.Partial("_ModeratorMenu")
+
+
+</section>

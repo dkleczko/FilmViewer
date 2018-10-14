@@ -1,0 +1,41 @@
+﻿
+<footer class="footer-wrapper">
+    <section class="container">
+        <div class="col-xs-4 col-md-2 footer-nav">
+
+        </div>
+        <div class="col-xs-4 col-md-2 footer-nav">
+            <ul class="nav-link">
+                <li>@Html.ActionLink("Movies", "Index", "Movie", null, new { @class = "nav-link__item" })
+                <li>@Html.ActionLink("Actors", "Index", "Actor", null, new { @class = "nav-link__item" })</li>
+                <li><a href="trailer.html" class="nav-link__item">Trailers</a></li>
+                <li><a href="rates-left.html" class="nav-link__item">Rates</a></li>
+            </ul>
+        </div>
+        <div class="col-xs-4 col-md-2 footer-nav">
+            <ul class="nav-link">
+                <li><a href="#" class="nav-link__item">Terms & Conditions</a></li>
+                <li><a class="nav-link__item">Gallery</a></li>
+                @Html.ActionLink("Contact", "Contact", "Home", null, new { @class = "nav-link__item" })
+                <li><a class="nav-link__item">Shortcodes</a></li>
+            </ul>
+        </div>
+        <div class="col-xs-12 col-md-6">
+            <div class="footer-info">
+                <p class="heading-special--small">FilmViewer<br><span class="title-edition">in the social media</span></p>
+
+                <div class="social">
+                    <a href='#' class="social__variant fa fa-facebook"></a>
+                    <a href='#' class="social__variant fa fa-twitter"></a>
+                    <a href='#' class="social__variant fa fa-vk"></a>
+                    <a href='#' class="social__variant fa fa-instagram"></a>
+                    <a href='#' class="social__variant fa fa-tumblr"></a>
+                    <a href='#' class="social__variant fa fa-pinterest"></a>
+                </div>
+
+                <div class="clearfix"></div>
+                <p class="copy">&copy; FilmViewer copy by Damian Kleczko</p>
+            </div>
+        </div>
+    </section>
+</footer>

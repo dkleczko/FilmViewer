@@ -1,0 +1,11 @@
+﻿@model FilmViewer.Models.Movies.SimilarMoviesViewModel
+    
+<div class="category category--cooming category--count marginb-sm mobile-category rs-cat">
+    <h3 class="category__title">Movies <br /><span class="title-edition"> Similar To</span></h3>
+    <ol>
+        @foreach (var movie in Model.SimilarMovies)
+        {
+            <li> @Html.ActionLink(movie.Title, "Details", "Movie", new { id = movie.MovieId }, new { @class = "category__item" })</li>
+        }
+    </ol>
+</div>

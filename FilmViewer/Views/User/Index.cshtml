@@ -1,0 +1,70 @@
+﻿@model FilmViewer.Models.User.UserViewModel
+@{
+    ViewBag.Title = "User panel";
+    Html.RenderPartial("_SearchFull");
+}
+<section class="container">
+    <div class="col-sm-8 col-md-9 col-sm-push-4">
+        <div class="devider-wrapper">
+            <div class="devider"></div>
+        </div>
+        <h2 class="page-heading">User panel</h2>
+        <div class="content-wrapper">
+            <h2 class="heading heading--outcontainer">Basic information</h2>
+
+            <div class="col-sm-6 col-md-3">
+                <div class="price">
+                    <div class="price-inner">
+                        <header>
+                            <p class="price__package">Favourites movies count</p>
+                            <p class="price__value">@Model.LikedMovies</p>
+                        </header>
+                        <ul class="feather-wrapper">
+                            <li class="price__feather"></li>
+
+                        </ul>
+                        <footer class="price__btn">
+                            @Html.ActionLink("Show", "Favourites", null, new { @class = "btn btn-md btn--danger btn--wider" })
+                        </footer>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+                <div class="price">
+                    <div class="price-inner">
+                        <header>
+                            <p class="price__package">Voted Actors</p>
+                            <p class="price__value">@Model.VotedActors</p>
+                        </header>
+                        <ul class="feather-wrapper">
+                            <li class="price__feather"></li>
+
+                        </ul>
+                        <footer class="price__btn">
+                            @Html.ActionLink("Show", "VotedActors", null, new { @class = "btn btn-md btn--danger btn--wider" })
+                        </footer>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+                <div class="price">
+                    <div class="price-inner">
+                        <header>
+                            <p class="price__package">Voted Movies</p>
+                            <p class="price__value">@Model.VotedMovies</p>
+                        </header>
+                        <ul class="feather-wrapper">
+                            <li class="price__feather"></li>
+
+                        </ul>
+                        <footer class="price__btn">
+                            @Html.ActionLink("Show", "VotedMovies", null, new { @class = "btn btn-md btn--danger btn--wider" })
+                        </footer>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @Html.Partial("_UserMenu")
+</section>
+

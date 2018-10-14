@@ -1,0 +1,110 @@
+﻿@using FilmViewer.AppHelpers
+@model FilmViewer.Models.Actors.ActorsListViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    Html.RenderPartial("_SearchFull");
+}
+
+@section JavaScript
+{
+    <script type="text/javascript">
+        $(function () {
+            init_Scroll();
+        });
+        $('.score').click(function () {
+
+            $(this).children().hide();
+            var divParent = $(this).parent();
+
+            $(this).html('<span class="rates__done">Dziękujemy za głos!</span>')
+            $.ajax({
+                url: 'Actor/AddVote',
+                type: 'POST',
+                data: JSON.stringify({ "stars": $(this).raty('score'), "actorId": $(this).attr('id') }),
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                error: function (xhr) {
+                    alert('Error: ' + xhr.statusText);
+                },
+                success: function (result) {
+                    divParent.children(".movie__rate-number").text(result.VoteCount);
+                    divParent.children(".movie__rating").text(result.VoteScores);
+                },
+                async: true,
+                processData: false
+            });
+
+        });
+    </script>
+}
+<section class="container">
+    <h2 class="page-heading heading--outcontainer">Actors</h2>
+
+    <div class="col-sm-8 col-md-9 col-sm-push-4 col-md-push-3">
+        <div class="select-area">
+            @Html.Partial("_SmallSearch")
+        </div>
+        @foreach (var actor in Model.Actors)
+        {
+            <div class="movie movie--preview popularity">
+                <div class="col-sm-5 col-md-3">
+                    <div class="movie__images">
+                        <img alt='' src="@Url.Content(FileHelpers.GetPhotoPath(actor.Folder, actor.PhotoUrl, "http://placehold.it/380x600"))">
+
+                    </div>
+
+                </div>
+                <div class="col-sm-7 col-md-9">
+                    @Html.ActionLink(actor.Name, "Details", "Actor", new { id = actor.Id }, new { @class = "actor__title link--huge" })
+
+
+                    <div class="preview-footer">
+                        <div class="movie__rate">
+                            @if (actor.HasUserVoteActor)
+                            {
+                                <div class="score" id="@actor.Id">
+                                </div>
+                                <script type="text/javascript">
+                                    createRaty(@actor.Id , @actor.CurrentUserVote)
+                                </script>
+                            }
+                            else
+                            {
+                                <div class="score @(User.Identity == null || !User.Identity.IsAuthenticated ? "disabled" : "")" id="@actor.Id">
+                                </div>
+                                <script type="text/javascript">
+                                    createRaty(@actor.Id , 0)
+                                </script>
+                            }
+                            <span class="movie__rate-number">@actor.VoteCount votes</span>
+                            <span class="movie__rating">
+                                @(actor.VoteCount != 0 ?
+                                                        Math.Round(((double)actor.VoteScores / (double)actor.VoteCount), 1).ToString() : "0,0")
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+            </div>
+            <div class="clearfix"></div>
+        }
+        <div class="coloum-wrapper">
+            <div class="pagination paginatioon--full">
+                @Html.ActionLink("prev", "Index", "Actor",
+                                            new { page = Model.Actors.PageNumber - 1, searchString = ViewBag.CurrentFilter, searchBy = ViewBag.SearchBy },
+                                   new { @class = "pagination__prev " + (!Model.Actors.IsFirstPage ? "" : "disabled") })
+                @Html.ActionLink("next", "Index", "Actor",
+                                                     new { page = Model.Actors.PageNumber + 1, searchString = ViewBag.CurrentFilter, searchBy = ViewBag.SearchBy },
+                          new { @class = "pagination__next " + (!Model.Actors.IsLastPage ? "" : "disabled") })
+
+            </div>
+        </div>
+    </div>
+    <aside class="col-sm-4 col-md-3 col-sm-pull-8 col-md-pull-9"></aside>
+</section>
+

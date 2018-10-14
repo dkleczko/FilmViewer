@@ -1,0 +1,326 @@
+﻿@model FilmViewer.Models.Moderator.MovieEditViewModel
+@using FilmViewer.AppHelpers
+@using FilmViewer.Models.Moderator
+@using Newtonsoft.Json
+@{
+    ViewBag.Title = "MovieEdit";
+    Html.RenderPartial("_SearchFull");
+
+
+}
+@section styles{
+    @Styles.Render(
+                "~/bundles/styles/dropzone",
+                "~/bundles/styles/datepicker",
+                "~/bundles/styles/panelCreate",
+                "~/bundles/styles/loopj")
+}
+@section scripts{
+    @Scripts.Render(
+                "~/bundles/scripts/datepicker",
+                "~/bundles/scripts/dropzone",
+                "~/bundles/scripts/loopj")
+}
+@section JavaScript
+{
+    <script type="text/javascript">
+
+    this.$('#@MovieEditViewModel.CategoryCollectionKey').tokenInput('@Url.Action("SearchCategoryWithName", "Moderator")', {
+        queryParam: 'searchTerm',
+        theme: 'facebook',
+        preventDuplicates: true,
+        highlightDuplicates: false
+    });
+    this.$('#@MovieEditViewModel.ActorCollectionKey').tokenInput('@Url.Action("SearchActorWithName", "Moderator")', {
+        queryParam: "searchTerm",
+        theme: "facebook",
+        preventDuplicates: true,
+        highlightDuplicates: false
+    });
+
+    this.$('#@MovieEditViewModel.DirectorCollectionKey').tokenInput('@Url.Action("SearchDirectorWithName", "Moderator")', {
+        queryParam: 'searchTerm',
+        theme: 'facebook',
+        preventDuplicates: true,
+        highlightDuplicates: false,
+        tokenLimit: 1
+    });
+    window.onload = function () {
+        $('#PremiereDate').Zebra_DatePicker();
+
+        GetDirector();
+        GetActors();
+        GetCategories();
+    };
+    function GetDirector()
+    {
+        var directorId = '@(Model.Director != null ? Model.Director.Id : 0)';
+        var name = '@(Model.Director != null ? Model.Director.Name : "")';
+
+        if(directorId !== '' && name !== '')
+        {
+            $('#@MovieEditViewModel.DirectorCollectionKey').tokenInput('add', {id: directorId, name: name});
+
+        }
+
+    }
+    function GetCategories()
+    {
+        var categories = @Html.Raw(Json.Encode(
+        (Model.Categories.Select(cat => new {
+                id = cat.CategoryId,
+                name = cat.CategoryName
+        }
+        ))));
+        if(categories != null && categories != undefined)
+        {
+            for(var i = 0;i <categories.length ; i++)
+            {
+                $('#@MovieEditViewModel.CategoryCollectionKey').tokenInput('add', {id: categories[i].id, name: categories[i].name});
+
+
+            }
+        }
+    }
+    function GetActors()
+    {
+        var actors = @Html.Raw(
+        Json.Encode(
+            (Model.Actors.Select(actor => new
+            {
+                id = actor.Id,
+                name = actor.Name
+            })
+      )));
+        if(actors!= null  && actors != undefined)
+        {
+            for(var i = 0; i< actors.length; i++)
+            {
+                $('#@MovieEditViewModel.ActorCollectionKey').tokenInput('add', {id: actors[i].id, name: actors[i].name});
+
+            }
+
+        }
+
+    }
+
+    Dropzone.options.mydropzone = {
+        acceptedFiles: 'image/*',
+        url: '@Url.Action("AddMorePhotoToFilm", "Moderator", new { movieId = Model.MovieId})',
+        maxFilesize: 1000,
+        parallelUploads: 20,
+        uploadMultiple: true,
+        enqueueForUpload: false,
+        addRemoveLinks: true,
+        autoProcessQueue: true,
+        autoDiscover: false,
+        paramName: 'files',
+        previewsContainer: '#dropzonePreview',
+        clickable: true,
+        accept: function (file, done) {
+            done();
+        },
+        error: function (file, msg) {
+            alert(msg);
+        },
+        init: function () {
+
+            var myDropzone = this;
+
+            var photos = @Html.Raw(Json.Encode(
+                             Model.Photos.Select(photo => new {
+                                 id = photo.PhotoId,
+                                 path = FileHelpers.GetPhotoPath(Model.Folder, photo.Path),
+                                 name = FileHelpers.GetPhotoName(photo.Path)
+                                }
+                            )));
+
+
+            $.each(photos,
+                function(key, value) {
+                    var mockFile = { name: value.name };
+
+                    myDropzone.emit('addedfile', mockFile);
+                    myDropzone.options.thumbnail.call(myDropzone, mockFile, '/File/Image?serverPath=' + value.path);
+                    myDropzone.files.push(mockFile);
+                    myDropzone.emit('complete', mockFile);
+                });
+            this.on('removedfile',
+                function(file) {
+                    var x = confirm('Do you want to delete?');
+                    if (!x) return false;
+
+                    $.post('/Moderator/RemoveMoviePhoto',
+                        { fileName: file.name, actorId: @Model.MovieId },
+                        function(data, status) {
+                            alert('file deleted');
+                        });
+                    return true;
+                });
+
+        }
+    };
+    </script>
+}
+<section class="container">
+    <div class="col-sm-8 col-md-9 col-sm-push-4 col-md-push-3">
+        <div class="movie">
+
+            <div class="devider-wrapper">
+                <div class="devider"></div>
+            </div>
+            <h2 class="page-heading">EditPanel</h2>
+
+
+
+            <div class="panelCreate panelCreate-primary dialog-panel">
+                <div class="panelCreate-heading">
+                    <h2 class="page-heading">Movie</h2>
+                </div>
+                <div class="panelCreate-body">
+                    <div class="tabs tabs--horisontal">
+                        <ul class="nav nav-tabs" id="hTab">
+                            <li class="active"><a href="#movie" data-toggle="tab">Data</a></li>
+                            <li><a href="#photos" data-toggle="tab">Photos</a></li>
+
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="movie">
+                                @using (Html.BeginForm("MovieEdit", "Moderator", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal" }))
+                                {
+                                    @Html.HiddenFor(p => p.MovieId)
+                                    @Html.AntiForgeryToken()
+                                    <div>
+                                        <div class="form-group">
+                                            @if (!Html.ViewData.ModelState.IsValid)
+                                            {
+                                                @Html.ValidationSummary("", new { @class = "inv-em alert alert-danger" })
+                                            }
+                                            <label class="control-label col-md-2 col-md-offset-2">Title</label>
+                                            <div class="col-md-7">
+                                                <div class="form-group">
+                                                    <div class="col-md-11">
+                                                        @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", placeholder = "Tytuł Polski" } })
+                                                        @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-2 col-md-offset-2">Informations</label>
+                                            <div class="col-md-7">
+                                                <div class="form-group">
+                                                    <div class="col-md-11">
+                                                        @Html.EditorFor(model => model.PremiereDate, new { htmlAttributes = new { @class = "form-control", placeholder = "Premiere date", id = "PremiereDate" } })
+                                                        @Html.ValidationMessageFor(model => model.PremiereDate, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="col-md-11">
+                                                        @Html.EditorFor(model => model.Duration, new { htmlAttributes = new { @class = "form-control", placeholder = "Time(min)" } })
+                                                        @Html.ValidationMessageFor(model => model.Duration, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="col-md-11">
+                                                        @Html.EditorFor(model => model.ProductionCountries, new { htmlAttributes = new { @class = "form-control", placeholder = "Production countries" } })
+                                                        @Html.ValidationMessageFor(model => model.ProductionCountries, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                                <div class="form-group internal">
+                                                    <div class="col-md-11">
+                                                        @Html.EditorFor(model => model.HeraldUrl, new { htmlAttributes = new { @class = "form-control", placeholder = "Trailer url" } })
+                                                        @Html.ValidationMessageFor(model => model.HeraldUrl, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="form-group internal">
+                                            <label class="control-label col-md-2 col-md-offset-2">Director</label>
+                                            <div class="col-md-7">
+                                                <div class="form-group">
+                                                    <div class="col-md-11">
+                                                        <input type="text" id="@MovieEditViewModel.DirectorCollectionKey" name="@MovieEditViewModel.DirectorCollectionKey" placeholder="Director" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group internal">
+                                            <label class="control-label col-md-2 col-md-offset-2">Categories</label>
+                                            <div class="col-md-7">
+                                                <div class="form-group">
+                                                    <div class="col-md-11">
+                                                        <input type="text" id="@MovieEditViewModel.CategoryCollectionKey" name="@MovieEditViewModel.CategoryCollectionKey" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group internal">
+                                            <label class="control-label col-md-2 col-md-offset-2">Actors</label>
+                                            <div class="col-md-7">
+                                                <div class="form-group">
+                                                    <div class="col-md-11">
+                                                        <input type="text" id="@MovieEditViewModel.ActorCollectionKey" name="@MovieEditViewModel.ActorCollectionKey" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group internal">
+                                            <label class="control-label col-md-2 col-md-offset-2">Metadatas</label>
+                                            <div class="col-md-7">
+                                                <div class="form-group">
+                                                    <div class="col-md-11">
+                                                        <input type="text" id="@MovieEditViewModel.MetadataCollectionKey" name="@MovieEditViewModel.MetadataCollectionKey" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group internal">
+                                            <label class="control-label col-md-2 col-md-offset-2">Description</label>
+                                            <div class="col-md-7">
+                                                <div class="form-group">
+                                                    <div class="col-md-11">
+                                                        @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", rows = "5" } })
+                                                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <div class="col-md-offset-4 col-md-3">
+                                            </div>
+                                            <div class="col-md-1">
+                                                <button class="btn btn-lg btn-primary" type="submit">Save</button>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                }
+
+                            </div>
+                            <div class="tab-pane" id="photos">
+                                @using (Html.BeginForm("AddMorePhotoToFilm", "Moderator", FormMethod.Post, new { enctype = "multipart/form-data", id = "mydropzone", @class = "dropzone" }))
+                                {
+                                    <div id="dropzonePreview"></div>
+                                }
+
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @Html.Partial("_ModeratorMenu")
+
+
+</section>
+
+

@@ -1,0 +1,71 @@
+﻿@model FilmViewer.Models.Moderator.IndexViewModel
+@{
+    ViewBag.Title = "Moderation Panel";
+    Html.RenderPartial("_SearchFull");
+
+}
+<section class="container">
+    <div class="col-sm-8 col-md-9 col-sm-push-4">
+        <div class="devider-wrapper">
+            <div class="devider"></div>
+        </div>
+        <h2 class="page-heading">Moderation Panel</h2>
+        <div class="content-wrapper">
+            <h2 class="heading heading--outcontainer">Basic info</h2>
+
+            <div class="col-sm-6 col-md-3">
+                <div class="price">
+                    <div class="price-inner">
+                        <header>
+                            <p class="price__package">Movies count</p>
+                            <p class="price__value">@Model.MoviesCount</p>
+                        </header>
+                        <ul class="feather-wrapper">
+                            <li class="price__feather"></li>
+
+                        </ul>
+                        <footer class="price__btn">
+                            @Html.ActionLink("Show", "MovieView", null, new { @class = "btn btn-md btn--danger btn--wider" })
+                        </footer>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+                <div class="price">
+                    <div class="price-inner">
+                        <header>
+                            <p class="price__package">Actors count</p>
+                            <p class="price__value">@Model.ActorsCount</p>
+                        </header>
+                        <ul class="feather-wrapper">
+                            <li class="price__feather"></li>
+
+                        </ul>
+                        <footer class="price__btn">
+                            @Html.ActionLink("Show", "ViewActors", null, new { @class = "btn btn-md btn--danger btn--wider" })
+                        </footer>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+                <div class="price">
+                    <div class="price-inner">
+                        <header>
+                            <p class="price__package">Categories count</p>
+                            <p class="price__value">@Model.CategoriesCount</p>
+                        </header>
+                        <ul class="feather-wrapper">
+                            <li class="price__feather"></li>
+
+                        </ul>
+                        <footer class="price__btn">
+                            @Html.ActionLink("Show", "CategoryView", null, new { @class = "btn btn-md btn--danger btn--wider" })
+                        </footer>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @Html.Partial("_ModeratorMenu")
+</section>
+

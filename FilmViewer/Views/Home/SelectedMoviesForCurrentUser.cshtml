@@ -1,0 +1,51 @@
+﻿@using FilmViewer.AppHelpers
+@model FilmViewer.Models.Home.SelectedMoviesForCurrentUserViewModel
+<h2 id="target" class="page-heading heading--outcontainer">Selected specially for you </h2>
+<div class="col-sm-12">
+    <div class="row">
+        <div class="col-sm-12">
+            @{int i = 0;}
+            @foreach (var movie in Model.PrepardMoviesForUser)
+            {
+
+                <div class="movie movie--test @(i++ % 2==0 ? "movie--test--dark" :"movie--test--light") movie--test--left">
+
+                    <div class="movie__images">
+                        <a href="@Url.Action("Details", "Movie", new { id = movie.MovieId})" class="movie-beta__link">
+                            <img alt='' style="height: 50%" src="@Url.Content(FileHelpers.GetPhotoPath(movie.Folder, movie.PhotoUrl, "http://placehold.it/380x600"))">
+                        </a>
+                    </div>
+
+                    <div class="movie__info">
+                        @Html.ActionLink(movie.Title + "(" + (movie.PremiereDate.HasValue ? movie.PremiereDate.Value.Year.ToString() : "") + ")", "Details",
+                                 "Movie", new { id = movie.MovieId }, new { @class = "movie__title" })
+
+                        <p class="movie__time">@movie.Duration min</p>
+
+                        <p class="movie__option">
+                            @if (movie.Categories != null)
+                            {
+                                foreach (var cat in movie.Categories)
+                                {
+                                    @Html.ActionLink(cat.CategoryName, "Index", "Movie", new { category = cat.CategoryId }, null)
+                                }
+                            }
+                        </p>
+
+                        <div class="movie__rate">
+                            <div class="score"></div>
+                            <span class="movie__rating">
+                                @(movie.VoteCount != 0 ?
+                                            Math.Round(((double)movie.VoteScores / (double)movie.VoteCount), 1).ToString() : "0,0")
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+
+
+
+    </div>
+</div>

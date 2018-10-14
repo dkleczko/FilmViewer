@@ -1,0 +1,12 @@
+﻿
+<div class="search-wrapper">
+    <div class="container--add">
+        @using (Html.BeginForm("Index", "Admin", FormMethod.Get, htmlAttributes: new { @class = "search" }))
+        {
+            <input type="text" name="searchString" class="search__field" placeholder="Search user" value="@ViewBag.UserFilter">
+            <button type="submit" class="btn btn-md btn--danger search__button">Search</button>
+        }
+    </div>
+</div>
+
+

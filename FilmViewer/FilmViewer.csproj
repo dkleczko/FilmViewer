@@ -1,0 +1,573 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4EF1BB2B-2E51-4DFB-848C-A868CF533A02}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FilmViewer</RootNamespace>
+    <AssemblyName>FilmViewer</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>false</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <Use64BitIISExpress />
+    <UseGlobalApplicationHostFile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper, Version=7.0.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.7.0.1\lib\net45\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Web, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.Web.3.2.1.0\lib\net45-full\Ninject.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Web.Common, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.Web.Common.3.2.0.0\lib\net45-full\Ninject.Web.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.5.7\lib\net45\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog.Web, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.Web.4.5.3\lib\net35\NLog.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="WebActivatorEx, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebActivatorEx.2.0\lib\net40\WebActivatorEx.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Runtime">
+      <Private>True</Private>
+      <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.AspNet.Identity.Core">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Owin">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.2.1\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin">
+      <HintPath>..\packages\Microsoft.Owin.3.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.3.0.1\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security">
+      <HintPath>..\packages\Microsoft.Owin.Security.3.0.1\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Facebook">
+      <HintPath>..\packages\Microsoft.Owin.Security.Facebook.3.0.1\lib\net45\Microsoft.Owin.Security.Facebook.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Cookies">
+      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.3.0.1\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth">
+      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.3.0.1\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Google">
+      <HintPath>..\packages\Microsoft.Owin.Security.Google.3.0.1\lib\net45\Microsoft.Owin.Security.Google.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Twitter">
+      <HintPath>..\packages\Microsoft.Owin.Security.Twitter.3.0.1\lib\net45\Microsoft.Owin.Security.Twitter.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.MicrosoftAccount">
+      <HintPath>..\packages\Microsoft.Owin.Security.MicrosoftAccount.3.0.1\lib\net45\Microsoft.Owin.Security.MicrosoftAccount.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AppHelpers\FileHelpers.cs" />
+    <Compile Include="AppHelpers\Helper.cs" />
+    <Compile Include="AppHelpers\HtmlHelperExtensions.cs" />
+    <Compile Include="App_Start\ApplicationSignInManager.cs" />
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\ApplicationUserManager.cs" />
+    <Compile Include="App_Start\NinjectWeb.cs" />
+    <Compile Include="App_Start\NinjectWebCommon.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="AppHelpers\ManagerHelper.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ActorController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\CategoryController.cs" />
+    <Compile Include="Controllers\DirectorController.cs" />
+    <Compile Include="Controllers\FileController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\ModeratorController.cs" />
+    <Compile Include="Controllers\MovieController.cs" />
+    <Compile Include="Controllers\StaticContentController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Extension\Exceptions\NoValidStarsScoreException.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Infrastructure\NinjectControllerFactory.cs" />
+    <Compile Include="Mappings\FilmViewerMapper.cs" />
+    <Compile Include="Mappings\ViewModels\ActorEditViewModelProfile.cs" />
+    <Compile Include="Mappings\ViewModels\CreateActorViewModelProfile.cs" />
+    <Compile Include="Mappings\ViewModels\CreateDirectorViewModelProfile.cs" />
+    <Compile Include="Mappings\ViewModels\CreateFilmViewModelProfile.cs" />
+    <Compile Include="Mappings\ViewModels\CreateMetadataViewModelProfile.cs" />
+    <Compile Include="Mappings\ViewModels\DirectorEditViewModelProfile.cs" />
+    <Compile Include="Mappings\ViewModels\EditCategoryViewModelProfile.cs" />
+    <Compile Include="Mappings\ViewModels\EditMetadataViewModelProfile.cs" />
+    <Compile Include="Mappings\ViewModels\MovieEditViewModelProfile.cs" />
+    <Compile Include="Models\Actors\AddVoteRequest.cs" />
+    <Compile Include="Models\Actors\RatingListViewModel.cs" />
+    <Compile Include="Models\Admin\IndexViewModel.cs" />
+    <Compile Include="Models\Admin\ManageRolesViewModel.cs" />
+    <Compile Include="Models\Director\AddVoteRequest.cs" />
+    <Compile Include="Models\Director\DetailsViewModel.cs" />
+    <Compile Include="Models\Director\DirectorListViewModel.cs" />
+    <Compile Include="Models\Director\RatingListViewModel.cs" />
+    <Compile Include="Models\MessageViewModel.cs" />
+    <Compile Include="Models\Moderator\ActorEditViewModel.cs" />
+    <Compile Include="Models\Moderator\AddBestChoiceMovieViewModel.cs" />
+    <Compile Include="Models\Moderator\AddPhotoToDirectorViewModel.cs" />
+    <Compile Include="Models\Moderator\CategoryViewViewModel.cs" />
+    <Compile Include="Models\Moderator\CreateActorViewModel.cs" />
+    <Compile Include="Models\Moderator\CreateCategoryViewModel.cs" />
+    <Compile Include="Models\Moderator\CreateDirectorViewModel.cs" />
+    <Compile Include="Models\Moderator\CreateFilmViewModel.cs" />
+    <Compile Include="Models\Moderator\CreateMetadataViewModel.cs" />
+    <Compile Include="Models\Moderator\DirectorEditViewModel.cs" />
+    <Compile Include="Models\Moderator\EditCategoryViewModel.cs" />
+    <Compile Include="Models\Moderator\EditMetadataViewModel.cs" />
+    <Compile Include="Models\Moderator\MetadataViewViewModel.cs" />
+    <Compile Include="Models\Moderator\MovieEditViewModel.cs" />
+    <Compile Include="Models\Moderator\MovieViewViewModel.cs" />
+    <Compile Include="Models\Moderator\ViewActorsViewModel.cs" />
+    <Compile Include="Models\Moderator\ViewBestChoiceMoviesViewModel.cs" />
+    <Compile Include="Models\Moderator\ViewDirectorsViewModel.cs" />
+    <Compile Include="Models\Movies\MostCommentedMoviesViewModel.cs" />
+    <Compile Include="Models\Movies\RatingListViewModel.cs" />
+    <Compile Include="Models\Movies\SimilarMoviesViewModel.cs" />
+    <Compile Include="Models\User\FavouritesViewModel.cs" />
+    <Compile Include="Models\User\RecommendationsViewModel.cs" />
+    <Compile Include="Models\User\VotedActorsViewModel.cs" />
+    <Compile Include="Models\User\VotedDirectorsViewModel.cs" />
+    <Compile Include="Models\User\VotedMoviesViewModel.cs" />
+    <Compile Include="Localization\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Roles\CustomRoles.cs" />
+    <Compile Include="MetadataHelper\MetadataModel.cs" />
+    <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Actors\ActorsListViewModel.cs" />
+    <Compile Include="Models\Actors\DetailsViewModel.cs" />
+    <Compile Include="Models\AdminModels\UserRoleViewModel.cs" />
+    <Compile Include="Models\Home\HomeViewModel.cs" />
+    <Compile Include="Models\Home\MainMoviesListViewModel.cs" />
+    <Compile Include="Models\Home\SelectedMoviesForCurrentUserViewModel.cs" />
+    <Compile Include="Models\Home\Top6RatesMoviesViewModel.cs" />
+    <Compile Include="Models\ManagerViewModel.cs" />
+    <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\Moderator\AddPhotoToActorViewModel.cs" />
+    <Compile Include="Models\Moderator\AddPhotoToMovie.cs" />
+    <Compile Include="Models\Moderator\IndexViewModel.cs" />
+    <Compile Include="Models\Movies\DetailsViewModel.cs" />
+    <Compile Include="Models\Movies\MovieListViewModel.cs" />
+    <Compile Include="Models\User\UserViewModel.cs" />
+    <Compile Include="Models\ViewModelBase.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Startup.cs" />
+    <Compile Include="Statics\FolderPaths.cs" />
+    <Compile Include="Statics\UserMessages.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\assets\loader.gif" />
+    <Content Include="Content\assets\timer.png" />
+    <Content Include="Content\AvatarsDefault\default-avatar-50x50.jpg" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Datepicker\calendar.png" />
+    <Content Include="Content\Datepicker\default.css" />
+    <Content Include="Content\images\Errors\error.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\images\rate\star-off.svg" />
+    <Content Include="Content\images\rate\star-on.svg" />
+    <Content Include="Content\Menu\idangerous.swiper.css" />
+    <Content Include="Content\images\components\arrow.svg" />
+    <Content Include="Content\images\components\bg-movie.png" />
+    <Content Include="Content\images\components\close.svg" />
+    <Content Include="Content\images\icons\actors.svg" />
+    <Content Include="Content\images\icons\camera.svg" />
+    <Content Include="Content\images\components\price-pattern.jpg" />
+    <Content Include="Content\images\components\scarf.png" />
+    <Content Include="Content\images\components\select-icons.png" />
+    <Content Include="Content\images\components\wave-danger.svg" />
+    <Content Include="Content\images\components\wave-dark-sm.svg" />
+    <Content Include="Content\images\components\wave-dark.svg" />
+    <Content Include="Content\images\components\wave-hover.svg" />
+    <Content Include="Content\images\components\wave-light-sm.svg" />
+    <Content Include="Content\images\components\wave-light.svg" />
+    <Content Include="Content\images\components\wave-main.svg" />
+    <Content Include="Content\images\components\wave.svg" />
+    <Content Include="Content\images\icons\comment.svg" />
+    <Content Include="Content\images\icons\director.svg" />
+    <Content Include="Content\images\icons\film.svg" />
+    <Content Include="Content\images\icons\fiml.svg" />
+    <Content Include="Content\images\icons\left-arrow-danger.svg" />
+    <Content Include="Content\images\icons\left-arrow-dark.svg" />
+    <Content Include="Content\images\icons\left-arrow.svg" />
+    <Content Include="Content\images\icons\mause.svg" />
+    <Content Include="Content\images\icons\right-arrow-danger.svg" />
+    <Content Include="Content\images\icons\right-arrow-dark.svg" />
+    <Content Include="Content\images\icons\right-arrow.svg" />
+    <Content Include="Content\images\icons\stars.svg" />
+    <Content Include="Content\img\select-icons.png" />
+    <Content Include="Content\Loopj\token-input-facebook.css" />
+    <Content Include="Content\Menu\navigate.css" />
+    <Content Include="Content\Menu\jquery.selectbox.css" />
+    <Content Include="Content\Menu\magnific-popup.css" />
+    <Content Include="Content\Menu\settings.css" />
+    <Content Include="Content\Menu\style.css" />
+    <Content Include="Content\PagedList.css" />
+    <Content Include="Content\panelCreate.css" />
+    <Content Include="Content\tmp.css" />
+    <Content Include="Content\uikit\uikit.css" />
+    <Content Include="favicon.ico" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Global.asax" />
+    <Content Include="Content\Site.css" />
+    <Content Include="Image\logo-dark.png" />
+    <Content Include="Scripts\Base\basicScripts.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Content\fonts\aleo-bold.ttf" />
+    <Content Include="Content\fonts\aleo-bold.woff" />
+    <Content Include="Content\fonts\aleo-italic.ttf" />
+    <Content Include="Content\fonts\aleo-italic.woff" />
+    <Content Include="Content\fonts\aleo-regular.ttf" />
+    <Content Include="Content\fonts\aleo-regular.woff" />
+    <Content Include="Content\fonts\MuseoSans_500-webfont.ttf" />
+    <Content Include="Content\fonts\MuseoSans_500-webfont.woff" />
+    <Content Include="Scripts\Bootstrap\bootstrap.min.js" />
+    <Content Include="Scripts\Dropzone\dropzone-amd-module.min.js.map">
+      <DependentUpon>dropzone-amd-module.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Dropzone\dropzone.min.js.map">
+      <DependentUpon>dropzone.min.js</DependentUpon>
+    </Content>
+    <Content Include="NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="NLog.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\Datepicker\zebra_datepicker.js" />
+    <Content Include="Content\Dropzone\basic.css" />
+    <Content Include="Content\Dropzone\basic.min.css" />
+    <Content Include="Scripts\Dropzone\dropzone-amd-module.js" />
+    <Content Include="Scripts\Dropzone\dropzone-amd-module.min.js" />
+    <Content Include="Content\Dropzone\dropzone.css" />
+    <Content Include="Scripts\Dropzone\dropzone.js" />
+    <Content Include="Content\Dropzone\dropzone.min.css" />
+    <Content Include="Scripts\Dropzone\dropzone.min.js" />
+    <Content Include="Scripts\jquery-1.10.2.js" />
+    <Content Include="Scripts\Jquery\jquery-1.10.2.min.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\Jquery\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\Jquery\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\Loopj\jquery.tokeninput.js" />
+    <Content Include="Scripts\Maps\infobox.js" />
+    <Content Include="Scripts\Menu\custom.js" />
+    <Content Include="Scripts\Menu\form-element.js" />
+    <Content Include="Scripts\Menu\form.js" />
+    <Content Include="Scripts\Jquery\idangerous.swiper.min.js" />
+    <Content Include="Scripts\Jquery\jquery-migrate-1.2.1.min.js" />
+    <Content Include="Scripts\Jquery\jquery.magnific-popup.min.js" />
+    <Content Include="Scripts\Jquery\jquery.mobile.menu.js" />
+    <Content Include="Scripts\Jquery\jquery.raty.js" />
+    <Content Include="Scripts\Jquery\jquery.selectbox-0.2.min.js" />
+    <Content Include="Scripts\Menu\modernizr.custom.js" />
+    <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\respond.js" />
+    <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\Revolution\jquery.themepunch.plugins.min.js" />
+    <Content Include="Scripts\Revolution\jquery.themepunch.revolution.js" />
+    <Content Include="Scripts\uikit\uikit.js" />
+    <Content Include="Scripts\_references.js" />
+    <Content Include="video\53170154.mp4" />
+    <Content Include="Views\Statics\404.html" />
+    <Content Include="Web.config" />
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\Home\Contact.cshtml" />
+    <Content Include="Scripts\jquery-1.10.2.min.map" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Manage\ChangePassword.cshtml" />
+    <Content Include="Views\Manage\Index.cshtml" />
+    <Content Include="Views\Shared\Lockout.cshtml" />
+    <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Moderator\Index.cshtml" />
+    <Content Include="Views\Moderator\CreateFilm.cshtml" />
+    <Content Include="Views\Moderator\CreateCategory.cshtml" />
+    <Content Include="Views\Moderator\CreateActor.cshtml" />
+    <Content Include="Views\Moderator\CreateMetadata.cshtml" />
+    <Content Include="Views\Moderator\ViewActors.cshtml" />
+    <Content Include="Views\Moderator\ActorEdit.cshtml" />
+    <Content Include="Views\Moderator\CategoryView.cshtml" />
+    <Content Include="Views\Moderator\EditCategory.cshtml" />
+    <Content Include="Views\Moderator\MetadataView.cshtml" />
+    <Content Include="Views\Moderator\EditMetadata.cshtml" />
+    <Content Include="Views\Moderator\MovieView.cshtml" />
+    <Content Include="Views\Moderator\MovieEdit.cshtml" />
+    <Content Include="Views\Movie\Index.cshtml" />
+    <Content Include="Views\Movie\Details.cshtml" />
+    <Content Include="Views\Actor\Details.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Shared\_SearchFull.cshtml" />
+    <Content Include="Views\Shared\_SmallSearch.cshtml" />
+    <Content Include="Views\Actor\Index.cshtml" />
+    <Content Include="Views\Shared\_ModeratorMenu.cshtml" />
+    <Content Include="Views\Moderator\AddPhotoToFilm.cshtml" />
+    <Content Include="Views\Moderator\AddPhotoToActor.cshtml" />
+    <Content Include="Views\Shared\_CategorySearch.cshtml" />
+    <Content Include="Views\Shared\_ActorSearch.cshtml" />
+    <Content Include="Views\Shared\_MetadataSearch.cshtml" />
+    <Content Include="Views\Shared\_MovieSearch.cshtml" />
+    <Content Include="Views\Moderator\AddBestChoiceMovie.cshtml" />
+    <Content Include="Views\Shared\_LayoutHome.cshtml" />
+    <Content Include="Views\Moderator\ViewBestChoiceMovies.cshtml" />
+    <Content Include="Views\Shared\_UserMenu.cshtml" />
+    <Content Include="Views\User\Index.cshtml" />
+    <Content Include="Views\User\VotedMovies.cshtml" />
+    <Content Include="Views\User\VotedActors.cshtml" />
+    <Content Include="Views\User\Favourites.cshtml" />
+    <Content Include="Views\User\Recommendations.cshtml" />
+    <Content Include="Views\Movie\RatingList.cshtml" />
+    <Content Include="Views\Actor\RatingList.cshtml" />
+    <Content Include="Views\Home\MainMoviesList.cshtml" />
+    <Content Include="Views\Home\Top6RatesMovies.cshtml" />
+    <Content Include="Views\Home\SelectedMoviesForCurrentUser.cshtml" />
+    <Content Include="Views\Home\_SlitherTypeRight.cshtml" />
+    <Content Include="Views\Home\_SlitherTypeTop.cshtml" />
+    <Content Include="Views\Movie\MostCommentedMovies.cshtml" />
+    <Content Include="Views\Movie\SimilarMovies.cshtml" />
+    <Content Include="Views\Category\GetAllCategoriesToMenu.cshtml" />
+    <Content Include="Views\Moderator\CreateDirector.cshtml" />
+    <Content Include="Views\Moderator\AddPhotoToDirector.cshtml" />
+    <Content Include="Views\Moderator\ViewDirectors.cshtml" />
+    <Content Include="Views\Shared\_DirectorSearch.cshtml" />
+    <Content Include="Views\Moderator\DirectorEdit.cshtml" />
+    <Content Include="Views\Shared\_ModeratorLinks.cshtml" />
+    <Content Include="Views\Shared\_LayoutModeratorLinks.cshtml" />
+    <Content Include="Views\Director\Index.cshtml" />
+    <Content Include="Views\Director\Details.cshtml" />
+    <Content Include="Views\Director\RatingList.cshtml" />
+    <Content Include="Views\Shared\_RankLinks.cshtml" />
+    <Content Include="Views\Shared\_Footer.cshtml" />
+    <Content Include="Views\Shared\_LayoutMenuContainer.cshtml" />
+    <Content Include="Views\User\VotedDirectors.cshtml" />
+    <Content Include="Views\Shared\_AccountPanelMenu.cshtml" />
+    <Content Include="Views\Shared\_AdminMenu.cshtml" />
+    <Content Include="Views\Shared\_UserSearch.cshtml" />
+    <Content Include="Views\Admin\ManageRoles.cshtml" />
+    <Content Include="Views\StaticContent\PageNotFound.cshtml" />
+    <Content Include="Views\StaticContent\SomethingWrong.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Content\Base\" />
+    <Folder Include="Views\Base\" />
+    <Folder Include="Views\File\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="packages.config" />
+    <None Include="Project_Readme.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FilmViewer.Business\FilmViewer.Business.csproj">
+      <Project>{0b8058bb-dc0f-480a-a016-cc6d9ddfae45}</Project>
+      <Name>FilmViewer.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FilmViewer.DAL\FilmViewer.DAL.csproj">
+      <Project>{AEC9286E-A834-4C44-B263-E1E7FE5021FE}</Project>
+      <Name>FilmViewer.DAL</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Localization\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>56205</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost/FilmViewer</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

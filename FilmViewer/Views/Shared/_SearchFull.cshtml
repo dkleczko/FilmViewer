@@ -1,0 +1,19 @@
+﻿<div class="search-wrapper">
+    <div class="container container--add">
+        @using (Html.BeginForm("Index", "Movie", FormMethod.Get, htmlAttributes: new { id = "search-form", @class = "search" }))
+        {
+            <input type="text" name="searchString" class="search__field" placeholder="Search movie by" value="@ViewBag.CurrentFilter">
+            <select name="searchBy" id="search-sort" class="search__sort" tabindex="0">
+                <option value="0" selected='selected'>Title</option>
+                <option value="1">Actor</option>
+                <option value="2">Director</option>
+            </select>
+            <button type='submit' class="btn btn-md btn--danger search__button">Search Movie</button>
+        }
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $("#search-sort").selectbox();
+    });
+</script>

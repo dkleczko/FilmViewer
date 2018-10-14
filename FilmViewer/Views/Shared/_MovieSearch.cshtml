@@ -1,0 +1,11 @@
+﻿<div class="search-wrapper">
+    <div class="container--add">
+        @using (Html.BeginForm("MovieView", "Moderator", FormMethod.Get, htmlAttributes: new { @class = "search" }))
+        {
+            <input type="text" name="searchString" class="search__field" placeholder="Search movie" value="@ViewBag.MovieFilter">
+            <button type='submit' class="btn btn-md btn--danger search__button">Search</button>
+        }
+    </div>
+</div>
+
+

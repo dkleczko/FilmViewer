@@ -1,0 +1,28 @@
+﻿@using FilmViewer.Models
+@using FilmViewer.Statics
+
+<section class="container">
+    <div class="col-sm-8 col-md-9 col-sm-push-4 col-md-push-39">
+        <div class="devider-wrapper">
+            <div class="devider"></div>
+        </div>
+        <h2 class="page-heading">Account Panel</h2>
+        <div class="content-wrapper">
+            <h2 class="heading heading--outcontainer">Change your account settings</h2>
+            <div class="panelCreate-body">
+
+                @if (TempData[UserMessages.UserMessage] != null)
+                {
+                    var message = (MessageViewModel)TempData[UserMessages.UserMessage];
+
+                    <div class="alert @message.CssClass">
+                        <span class="icon-flag"></span>
+                        @message.Message
+                        <a class="close" data-dismiss="alert" href="#" aria-hidden="true"></a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    @Html.Partial("_AccountPanelMenu")
+</section>

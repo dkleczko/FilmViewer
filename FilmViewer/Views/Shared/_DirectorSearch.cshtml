@@ -1,0 +1,12 @@
+﻿<div class="search-wrapper">
+    <div class="container--add">
+        @using (Html.BeginForm("ViewDirectors", "Moderator", FormMethod.Get, htmlAttributes: new { @class = "search" }))
+        {
+            <input type="text" name="searchString" class="search__field" placeholder="Search director" value="@ViewBag.ActorsFilter">
+            <button type='submit' class="btn btn-md btn--danger search__button">Search</button>
+        }
+    </div>
+</div>
+
+
+

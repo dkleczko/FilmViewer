@@ -1,0 +1,211 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{0B8058BB-DC0F-480A-A016-CC6D9DDFAE45}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FilmViewer.Business</RootNamespace>
+    <AssemblyName>FilmViewer.Business</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper, Version=7.0.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.7.0.1\lib\net45\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Web, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.Web.3.2.1.0\lib\net45-full\Ninject.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Web.Common, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.Web.Common.3.2.0.0\lib\net45-full\Ninject.Web.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WebActivatorEx, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebActivatorEx.2.0\lib\net40\WebActivatorEx.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Abstract\DataProviders\IActorDataProvider.cs" />
+    <Compile Include="Abstract\DataProviders\ICategoryDataProvider.cs" />
+    <Compile Include="Abstract\DataProviders\ICommentDataProvider.cs" />
+    <Compile Include="Abstract\DataProviders\IDirectorDataProvider.cs" />
+    <Compile Include="Abstract\DataProviders\IMainMovieDataProvider.cs" />
+    <Compile Include="Abstract\DataProviders\IMetadataDataProvider.cs" />
+    <Compile Include="Abstract\DataProviders\IMovieDataProvider.cs" />
+    <Compile Include="Abstract\DataProviders\IRoleDataProvider.cs" />
+    <Compile Include="Abstract\DataProviders\IUserDataProvider.cs" />
+    <Compile Include="Abstract\Factory\IDirectoryFactory.cs" />
+    <Compile Include="Abstract\Factory\IMovieFactory.cs" />
+    <Compile Include="Abstract\Helpers\IMetadataHelper.cs" />
+    <Compile Include="Abstract\Services\IActorService.cs" />
+    <Compile Include="Abstract\Services\ICategoryService.cs" />
+    <Compile Include="Abstract\Services\IDirectorService.cs" />
+    <Compile Include="Abstract\Services\IEmailService.cs" />
+    <Compile Include="Abstract\Services\IMainMovieService.cs" />
+    <Compile Include="Abstract\Services\IMetadataService.cs" />
+    <Compile Include="Abstract\Services\IMovieService.cs" />
+    <Compile Include="DataProviders\ActorDataProvider.cs" />
+    <Compile Include="DataProviders\CategoryDataProvider.cs" />
+    <Compile Include="DataProviders\CommentDataProvider.cs" />
+    <Compile Include="DataProviders\DirectorDataProvider.cs" />
+    <Compile Include="DataProviders\MainMovieDataProvider.cs" />
+    <Compile Include="DataProviders\MetadataDataProvider.cs" />
+    <Compile Include="DataProviders\MovieDataProvider.cs" />
+    <Compile Include="DataProviders\RoleDataProvider.cs" />
+    <Compile Include="DataProviders\UserDataProvider.cs" />
+    <Compile Include="Dto\Domain\ApplicationUserDetailsDto.cs" />
+    <Compile Include="Dto\Domain\ApplicationUserDto.cs" />
+    <Compile Include="Dto\Domain\RoleDto.cs" />
+    <Compile Include="Dto\Extended\Actor\ActorCurrentUserVoteDto.cs" />
+    <Compile Include="Dto\Extended\Actor\ActorPhotosMoviesDto.cs" />
+    <Compile Include="Dto\Extended\Actor\CurrentActorVoteDto.cs" />
+    <Compile Include="Dto\Extended\Director\CurrentDirectorVoteDto.cs" />
+    <Compile Include="Dto\Extended\Director\DirectorCurrentUserVoteDto.cs" />
+    <Compile Include="Dto\Extended\Director\DirectorDetailsPhotosDto.cs" />
+    <Compile Include="Dto\Extended\Director\DirectorPhotosMoviesDto.cs" />
+    <Compile Include="Dto\Domain\DirectorDetailsDto.cs" />
+    <Compile Include="Dto\Domain\Enum\SliderTypeDto.cs" />
+    <Compile Include="Dto\Domain\MainMoviesDto.cs" />
+    <Compile Include="Dto\Extended\Director\VotedDirectorByUserDto.cs" />
+    <Compile Include="Dto\Extended\Movie\MovieDetailsExtendedDto.cs" />
+    <Compile Include="Dto\Extended\Movie\MovieWithSimilarityDto.cs" />
+    <Compile Include="Dto\Extended\Actor\VotedActorsByUserDto.cs" />
+    <Compile Include="Dto\Extended\Movie\VotedMoviesByUserDto.cs" />
+    <Compile Include="Dto\Domain\CategoryDto.cs" />
+    <Compile Include="Dto\Extended\Movie\RecommendedMovieForUserDto.cs" />
+    <Compile Include="Dto\Extended\Movie\SearchMoviesDto.cs" />
+    <Compile Include="Dto\Extended\Movie\Top6RatesMoviesDto.cs" />
+    <Compile Include="Dto\Domain\ActorDetailsDto.cs" />
+    <Compile Include="Dto\Domain\ActorDto.cs" />
+    <Compile Include="Dto\Domain\CommentDto.cs" />
+    <Compile Include="Dto\Domain\DirectorDto.cs" />
+    <Compile Include="Dto\Domain\MetadataDto.cs" />
+    <Compile Include="Dto\Domain\MovieDetailsDto.cs" />
+    <Compile Include="Dto\Domain\MovieDto.cs" />
+    <Compile Include="Dto\Domain\MoviePersonDetailsDto.cs" />
+    <Compile Include="Dto\Domain\MoviePersonDto.cs" />
+    <Compile Include="Dto\Extended\Email\EmailMessageDto.cs" />
+    <Compile Include="Dto\Extended\Actor\VoteActorDto.cs" />
+    <Compile Include="Dto\Extended\Director\VoteDirectorDto.cs" />
+    <Compile Include="Dto\Extended\Email\VoteMovieResult.cs" />
+    <Compile Include="Enums\AddResult.cs" />
+    <Compile Include="Enums\AddToFavouriteResult.cs" />
+    <Compile Include="Enums\SearchMovieBy.cs" />
+    <Compile Include="Enums\SortMovieBy.cs" />
+    <Compile Include="Enums\SortOrder.cs" />
+    <Compile Include="Enums\SortParam.cs" />
+    <Compile Include="Factory\DirectoryFactory.cs" />
+    <Compile Include="Factory\MovieFactory.cs" />
+    <Compile Include="Helpers\MetadataHelper.cs" />
+    <Compile Include="Infrastructure\FilmViewerBusinessNinejctModule.cs" />
+    <Compile Include="Mappings\BusinessMapper.cs" />
+    <Compile Include="Mappings\Domain\ApplicationUserDetailsDtoProfile.cs" />
+    <Compile Include="Mappings\Domain\ApplicationUserDtoProfile.cs" />
+    <Compile Include="Mappings\Domain\RoleDtoProfile.cs" />
+    <Compile Include="Mappings\Domain\SliderTypeDtoProfile.cs" />
+    <Compile Include="Mappings\Extended\Actor\ActorDetailsCurrentUserVoteDtoProfile.cs" />
+    <Compile Include="Mappings\Extended\Actor\ActorPhotosMoviesDtoProfile.cs" />
+    <Compile Include="Mappings\Extended\Director\VotedDirectorByUserDtoProfile.cs" />
+    <Compile Include="Mappings\Extended\Movie\AllMainMoviesDtoProfile.cs" />
+    <Compile Include="Mappings\Domain\CategoryDtoProfile.cs" />
+    <Compile Include="Mappings\Domain\CommentDtoProfile.cs" />
+    <Compile Include="Mappings\Extended\Actor\CurrentActorVoteDtoProfile.cs" />
+    <Compile Include="Mappings\Extended\Director\CurrentDirectorVoteDtoProfile.cs" />
+    <Compile Include="Mappings\Extended\Director\DirectorCurrentUserVoteDtoProfile.cs" />
+    <Compile Include="Mappings\Extended\Director\DirectorDetailsPhotosDtoProfile.cs" />
+    <Compile Include="Mappings\Extended\Director\DirectorPhotosMoviesDtoProfile.cs" />
+    <Compile Include="Mappings\Extended\Movie\MovieDetailsExtendedDtoProfile.cs" />
+    <Compile Include="Mappings\Extended\Movie\MovieWithSimilarityDtoProfile.cs" />
+    <Compile Include="Mappings\Extended\Movie\RecommendedMovieForUserDtoProfile.cs" />
+    <Compile Include="Mappings\Extended\Movie\SearchMoviesDtoProfile.cs" />
+    <Compile Include="Mappings\Extended\Movie\Top6RatesMoviesDtoProfile.cs" />
+    <Compile Include="Mappings\Extended\Actor\VotedActorsByUserDtoProfile.cs" />
+    <Compile Include="Mappings\Extended\Movie\VotedMoviesByUserDtoProfile.cs" />
+    <Compile Include="Mappings\Domain\ActorDetailsDtoProfile.cs" />
+    <Compile Include="Mappings\Domain\ActorDtoProfile.cs" />
+    <Compile Include="Dto\Domain\PhotoPathDto.cs" />
+    <Compile Include="Mappings\Domain\DirectorDetailsDtoProfile.cs" />
+    <Compile Include="Mappings\Domain\DirectorDtoProfile.cs" />
+    <Compile Include="Mappings\Domain\MetadataDtoProfile.cs" />
+    <Compile Include="Mappings\Domain\MovieDetailsDtoProfile.cs" />
+    <Compile Include="Mappings\Domain\MovieDtoProfile.cs" />
+    <Compile Include="Mappings\Domain\MoviePersonDetailsDtoProfile.cs" />
+    <Compile Include="Mappings\Domain\MoviePersonDtoProfile.cs" />
+    <Compile Include="Mappings\Domain\PhotoPathDtoProfile.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RecommendationsEngine\Recommendation.cs" />
+    <Compile Include="RecommendationsEngine\ViewType.cs" />
+    <Compile Include="Services\ActorService.cs" />
+    <Compile Include="Services\CategoryService.cs" />
+    <Compile Include="Services\DirectorService.cs" />
+    <Compile Include="Services\EmailService.cs" />
+    <Compile Include="Services\MainMovieService.cs" />
+    <Compile Include="Services\MetadataService.cs" />
+    <Compile Include="Services\MovieService.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FilmViewer.DAL\FilmViewer.DAL.csproj">
+      <Project>{aec9286e-a834-4c44-b263-e1e7fe5021fe}</Project>
+      <Name>FilmViewer.DAL</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

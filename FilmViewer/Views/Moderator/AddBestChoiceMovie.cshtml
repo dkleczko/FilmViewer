@@ -1,0 +1,175 @@
+﻿@using FilmViewer.Models.Moderator
+@model FilmViewer.Models.Moderator.AddBestChoiceMovieViewModel
+@{
+    ViewBag.Title = "AddBestChoiceMovie";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    Html.RenderPartial("_SearchFull");
+
+}
+@section styles{
+    @Styles.Render(
+        "~/bundles/styles/dropzone",
+        "~/bundles/styles/panelCreate",
+        "~/bundles/styles/loopj")
+}
+@section scripts{
+    @Scripts.Render(
+        "~/bundles/scripts/dropzone",
+        "~/bundles/scripts/loopj")
+}
+@section JavaScript
+{
+    <script type="text/javascript">
+        $('#resetButton').click(function() {
+            $('#@AddBestChoiceMovieViewModel.MovieCollectionKey').tokenInput('clear');
+
+        });
+
+        $(document).ready(function() {
+            $('#@AddBestChoiceMovieViewModel.MovieCollectionKey').tokenInput('SearchMovieWithName',
+                {
+                    queryParam: 'searchTerm',
+                    theme: 'facebook',
+                    preventDuplicates: true,
+                    highlightDuplicates: false,
+                    tokenLimit: 1
+                });
+        });
+        Dropzone.options.mydropzone = {
+            // url does not has to be written if we have wrote action in the form tag but i have mentioned here just for convenience sake
+            acceptedFiles: 'image/*',
+            url: '#',
+            maxFilesize: 1000,
+            parallelUploads: 1,
+            uploadMultiple: false,
+            enqueueForUpload: false,
+            addRemoveLinks: true,
+            autoProcessQueue: false,
+            autoDiscover: false,
+            paramName: 'files',
+            previewsContainer: '#dropzonePreview',
+            clickable: true,
+            accept: function(file, done) {
+                done();
+            },
+            error: function(file, msg) {
+                alert(msg);
+            },
+            init: function() {
+
+                var myDropzone = this;
+
+                $('#Send').on('click',
+                    function(e) {
+                        e.preventDefault();
+                        myDropzone.processQueue();
+                    });
+                this.on('complete',
+                    function() {
+                        window.location.href = '@Url.Action("ViewBestChoiceMovies", "Moderator")';
+                    });
+
+            }
+
+        };
+    </script>
+}
+<section class="container">
+    <div class="col-sm-8 col-md-9 col-sm-push-4 col-md-push-3">
+        <div class="movie">
+
+            <div class="devider-wrapper">
+                <div class="devider"></div>
+            </div>
+            <h2 class="page-heading">Creation panel</h2>
+
+
+            <div class="panelCreate panelCreate-primary dialog-panel">
+                <div class="panelCreate-heading">
+                    <h2 class="page-heading">Adding Hot Productions</h2>
+                </div>
+                <div class="panelCreate-body">
+                    @using (Html.BeginForm("AddBestChoiceMovie", "Moderator", FormMethod.Post, new { enctype = "multipart/form-data", id = "mydropzone", @class = "form-horizontal dropzone" }))
+                    {
+                        if (!Html.ViewData.ModelState.IsValid)
+                        {
+                            <div class="alert alert-danger">
+                                <span class="icon-warning"></span>
+                                @Html.ValidationSummary("")
+                                <a class="close" data-dismiss="alert" href="#" aria-hidden="true"></a>
+                            </div>
+                        }
+                        <div class="form-group internal">
+                            <label class="control-label col-md-2 col-md-offset-2">Movie</label>
+                            <div class="col-md-7">
+                                <div class="form-group">
+                                    <div class="col-md-11">
+                                        <input type="text" id="@AddBestChoiceMovieViewModel.MovieCollectionKey" name="@AddBestChoiceMovieViewModel.MovieCollectionKey" placeholder="Start typing" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group internal">
+                            <label class="control-label col-md-2 col-md-offset-2">Slider Type</label>
+                            <div class="col-md-7">
+                                <div class="form-group">
+                                    <div class="col-md-11">
+                                        @Html.EnumDropDownListFor(p => p.SliderType, "Select slider type", new {@class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group internal">
+                            <label class="control-label col-md-2 col-md-offset-2">Slider title</label>
+                            <div class="col-md-7">
+                                <div class="form-group">
+                                    <div class="col-md-11">
+                                        @Html.EditorFor(model => model.SliderTitle, new { htmlAttributes = new { @class = "form-control", placeholder = "Title", } })
+                                        @Html.ValidationMessageFor(model => model.SliderTitle, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group internal">
+                            <label class="control-label col-md-2 col-md-offset-2">Content</label>
+                            <div class="col-md-7">
+                                <div class="form-group">
+                                    <div class="col-md-11">
+                                        @Html.EditorFor(model => model.SliderContent, new { htmlAttributes = new { @class = "form-control", rows = 3, maxLength =300 } })
+                                        @Html.ValidationMessageFor(model => model.SliderContent, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group internal">
+                            <label class="control-label col-md-2 col-md-offset-2">Photos</label>
+                            <div class="col-md-7">
+                                <div class="form-group">
+                                    <div class="col-md-11">
+                                        <div id="dropzonePreview"></div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-4 col-md-3">
+                                <button class="btn btn-lg btn-danger" style="float:right" id="resetButton" type="reset">Clear</button>
+                            </div>
+                            <div class="col-md-3">
+                                <button class="btn btn-lg btn-primary" type="submit" id="Send">Create</button>
+
+                            </div>
+                        </div>
+
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+    @Html.Partial("_ModeratorMenu")
+
+
+</section>
+
